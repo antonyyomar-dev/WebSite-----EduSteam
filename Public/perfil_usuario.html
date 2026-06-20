@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduSteam – Perfil del Tutor</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="tutores.css">
+  <link rel="stylesheet" href="perfil.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a class="logo" href="index.html">
+      <img src="images/logo.png" alt="Logo EduSteam" class="logo-icon">
+      <span class="logo-text">EduSteam</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="buscar_tutores.html" class="active">Nuestros Maestros</a></li>
+      <li><a href="funciones.html">Funciones</a></li>
+      <li><a href="recursos.html">Recursos</a></li>
+      <li><a href="sobre_nosotros.html">Sobre nosotros</a></li>
+    </ul>
+    <!-- Avatar de usuario logueado -->
+    <div class="nav-avatar">JH</div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div class="breadcrumb">
+    <a href="buscar_tutores.html">Busca Tutores</a>
+    <span class="breadcrumb-sep">»</span>
+    <span class="breadcrumb-current">Roberto Castro</span>
+    <span class="breadcrumb-sep">»</span>
+    <a href="estadisticas_tutor.html">Estadisticas</a>
+  </div>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="perfil-main">
+
+    <!-- COLUMNA IZQUIERDA -->
+    <aside class="perfil-aside">
+
+      <!-- Card principal -->
+      <div class="perfil-card">
+        <div class="perfil-avatar">RC</div>
+        <h1 class="perfil-name">Roberto Castro</h1>
+        <p class="perfil-subject">Algebra - Cálculo</p>
+        <div class="perfil-badges">
+          <span class="badge badge--verificado">Verificado</span>
+          <span class="badge badge--disponible">Disponible</span>
+        </div>
+        <div class="perfil-rating">
+          <span class="stars">★★★★★</span>
+          <span class="perfil-score">4.9 (97 reseñas)</span>
+        </div>
+        <div class="perfil-actions">
+          <button class="btn-mensaje">Enviar mensaje</button>
+          <button class="btn-contratar">Contratar tutor</button>
+        </div>
+      </div>
+
+      <!-- Info general -->
+      <div class="perfil-info-card">
+        <h2 class="info-card-title">Información general</h2>
+        <ul class="info-list">
+          <li class="info-item">
+            <span class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <path d="M10 2L2 6l8 4 8-4-8-4z" fill="#1a2356"/>
+                <path d="M4 9v5c0 2 2.7 3.5 6 3.5S16 16 16 14V9" stroke="#1a2356" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <div>
+              <span class="info-label">Universidad</span>
+              <span class="info-value">PUCP</span>
+            </div>
+          </li>
+          <li class="info-item">
+            <span class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <rect x="3" y="4" width="14" height="13" rx="2" stroke="#1a2356" stroke-width="1.5"/>
+                <line x1="3" y1="8" x2="17" y2="8" stroke="#1a2356" stroke-width="1.5"/>
+                <line x1="7" y1="2" x2="7" y2="6" stroke="#1a2356" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="13" y1="2" x2="13" y2="6" stroke="#1a2356" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <div>
+              <span class="info-label">Experiencia</span>
+              <span class="info-value">3 años como tutor</span>
+            </div>
+          </li>
+          <li class="info-item">
+            <span class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke="#1a2356" stroke-width="1.5"/>
+                <polyline points="10,6 10,10 13,13" stroke="#1a2356" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+            <div>
+              <span class="info-label">Disponibilidad</span>
+              <span class="info-value">Lun - Vie . 3pm - 9pm</span>
+            </div>
+          </li>
+          <li class="info-item">
+            <span class="info-icon">
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="10" r="7" stroke="#1a2356" stroke-width="1.5"/>
+                <text x="6.5" y="14" font-size="9" fill="#1a2356" font-family="Inter">S/</text>
+              </svg>
+            </span>
+            <div>
+              <span class="info-label">Tarifa</span>
+              <span class="info-value">S/30 x hora</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Materias -->
+      <div class="perfil-info-card">
+        <h2 class="info-card-title">Materiales que enseño</h2>
+        <div class="materias-tags">
+          <span class="materia-tag">Algebra</span>
+          <span class="materia-tag">Cálculo I</span>
+          <span class="materia-tag">Trigonometría</span>
+          <span class="materia-tag">Cálculo II</span>
+          <span class="materia-tag">Geometría</span>
+          <span class="materia-tag">Estadística</span>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- COLUMNA DERECHA -->
+    <section class="perfil-content">
+
+      <!-- Sobre mí -->
+      <div class="perfil-section-card">
+        <h2 class="section-card-title">Sobre mí</h2>
+        <p class="sobre-mi-text">
+          Estudiante de Matemáticas en PUCP, tutor con metodología personalizada y trabajo con material propio, ejercicios resueltos paso a paso y refuerzo los conceptos desde la base. Tengo experiencia preparando alumnos para exámenes de admisión y cursos universitarios de primer y segundo ciclo.
+        </p>
+      </div>
+
+      <!-- Certificados y Video -->
+      <div class="perfil-two-cols">
+
+        <!-- Certificados -->
+        <div class="perfil-section-card">
+          <h2 class="section-card-title">Certificados y portafolios</h2>
+          <div class="cert-item">
+            <span class="cert-icon">
+              <svg width="20" height="24" viewBox="0 0 20 24" fill="none">
+                <rect x="2" y="1" width="16" height="22" rx="2" stroke="#1a2356" stroke-width="1.5"/>
+                <line x1="6" y1="7" x2="14" y2="7" stroke="#1a2356" stroke-width="1.2"/>
+                <line x1="6" y1="11" x2="14" y2="11" stroke="#1a2356" stroke-width="1.2"/>
+                <line x1="6" y1="15" x2="10" y2="15" stroke="#1a2356" stroke-width="1.2"/>
+              </svg>
+            </span>
+            <div>
+              <span class="cert-name">Diploma_PUCP.pdf</span>
+              <span class="cert-badge">Verificado</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Video -->
+        <div class="perfil-section-card">
+          <h2 class="section-card-title">Video de presentación</h2>
+          <div class="video-placeholder">
+            <div class="play-btn">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <polygon points="6,4 20,12 6,20" fill="#fff"/>
+              </svg>
+            </div>
+          </div>
+          <p class="video-empty">No hay  video de presentación</p>
+        </div>
+
+      </div>
+
+      <!-- Reseñas -->
+      <div class="perfil-section-card">
+        <div class="reviews-header">
+          <h2 class="section-card-title">Reseñas de estudiantes</h2>
+          <a href="#" class="ver-todas">Ver todas</a>
+        </div>
+
+        <div class="review-item">
+          <div class="review-avatar" style="background:#c7bfe8;">AM</div>
+          <div class="review-body">
+            <span class="review-name">Ariana M.</span>
+            <span class="review-stars">★★★★★</span>
+            <p class="review-text">Excelente tutor, explica muy bien desde lo básico. Gracias a él aprobé Cálculo I. Lo recomiendo totalmente.</p>
+          </div>
+        </div>
+
+        <div class="review-item">
+          <div class="review-avatar" style="background:#b8d4e8;">LP</div>
+          <div class="review-body">
+            <span class="review-name">Luis P.</span>
+            <span class="review-stars">★★★★★</span>
+            <p class="review-text">Muy paciente y con mucho material propio. Me ayudó a entender álgebra que nunca había podido.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  
+  <script src="script.js"></script>
+</body>
+</html>

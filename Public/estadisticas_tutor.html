@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mis Estadísticas - EduSteam</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background:#fff; }
+
+    .app-nav {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(20px,3vw,48px); height:64px;
+      border-bottom:1px solid #e5e7eb; background:#fff;
+    }
+    .app-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .app-logo img { width:36px; height:36px; }
+    .app-logo span { font-family:'El Messiri',sans-serif; font-size:1.7rem; font-weight:700; color:#1a2356; }
+    .avatar-btn {
+      width:40px; height:40px; border-radius:50%;
+      background:#c7bfe8; border:none; cursor:pointer;
+      font-family:'Inter',sans-serif; font-weight:700; font-size:.9rem; color:#1a2356;
+    }
+    .breadcrumb {
+      padding:10px clamp(20px,3vw,48px);
+      font-size:.85rem; color:#6b7280;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .breadcrumb a { color:#6b7280; text-decoration:none; }
+    .breadcrumb span { color:#4C5D8B; font-weight:600; }
+
+    .page-body {
+      padding:clamp(16px,2.5vw,36px) clamp(20px,3vw,48px);
+      display:flex; flex-direction:column; gap:20px;
+    }
+
+    /* stat cards */
+    .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+    .stat-card-p {
+      border:1.5px solid #d1d5db; border-radius:14px;
+      padding:18px 20px; background:#fff;
+    }
+    .stat-card-p .label { font-size:.82rem; color:#6b7280; font-weight:500; margin-bottom:6px; }
+    .stat-card-p .value {
+      font-family:'El Messiri',sans-serif;
+      font-size:2.4rem; font-weight:700; color:#9176AB; line-height:1; margin-bottom:4px;
+    }
+    .stat-card-p .sub { font-size:.78rem; color:#43a047; font-weight:700; }
+
+    /* middle row */
+    .middle-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+
+    .panel {
+      border:1.5px solid #d1d5db; border-radius:14px;
+      padding:20px 22px; background:#fff;
+    }
+    .panel-title {
+      font-family:'El Messiri',sans-serif;
+      font-size:1.1rem; font-weight:700; color:#4C5D8B; margin-bottom:16px;
+    }
+    .panel-header {
+      display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;
+    }
+    .ver-todas { font-size:.82rem; color:#9176AB; font-weight:600; cursor:pointer; text-decoration:none; }
+
+    /* bar chart */
+    .bar-chart {
+      display:flex; align-items:flex-end; gap:14px;
+      height:160px; border-bottom:2px solid #e5e7eb;
+      padding-bottom:0; margin-bottom:8px;
+    }
+    .bar-col { display:flex; flex-direction:column; align-items:center; flex:1; }
+    .bar-value { font-size:.75rem; color:#9176AB; font-weight:700; margin-bottom:4px; }
+    .bar-rect { width:100%; border-radius:6px 6px 0 0; background:#9176AB; display:block; }
+    .bar-label { font-size:.78rem; color:#6b7280; font-weight:600; margin-top:6px; }
+
+    /* alumnos activos */
+    .alumno-row {
+      display:flex; align-items:center; gap:12px; margin-bottom:14px;
+    }
+    .alumno-avatar {
+      width:36px; height:36px; border-radius:50%;
+      background:#c7bfe8; display:flex; align-items:center;
+      justify-content:center; font-weight:700; font-size:.78rem;
+      color:#1a2356; flex-shrink:0;
+    }
+    .alumno-bar-wrap { flex:1; position:relative; }
+    .alumno-track { height:14px; background:#e5e7eb; border-radius:99px; overflow:hidden; }
+    .alumno-fill { height:100%; background:#1B1E47; border-radius:99px; }
+    .alumno-pct {
+      font-size:.78rem; font-weight:700; color:#6b7280;
+      margin-left:8px; min-width:34px; text-align:right;
+    }
+    .alumno-row-inner { display:flex; align-items:center; }
+
+    /* table */
+    .income-table { width:100%; border-collapse:collapse; }
+    .income-table thead tr {
+      border-bottom:1px solid #e5e7eb;
+    }
+    .income-table th {
+      font-size:.78rem; font-weight:600; color:#6b7280;
+      padding:8px 10px; text-align:left;
+    }
+    .income-table td {
+      font-size:.88rem; font-weight:700; color:#1a2356;
+      padding:14px 10px; border-bottom:1px solid #f0f0f0;
+    }
+
+    @media(max-width:900px){
+      .stats-row { grid-template-columns:1fr 1fr; }
+      .middle-row { grid-template-columns:1fr; }
+    }
+    @media(max-width:520px){
+      .stats-row { grid-template-columns:1fr; }
+    }
+
+    /* export button */
+    .breadcrumb-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px clamp(20px,3vw,48px);
+      border-bottom:1px solid #e5e7eb;
+    }
+    .breadcrumb-row .bc { font-size:.85rem; color:#6b7280; }
+    .breadcrumb-row .bc a { color:#6b7280; text-decoration:none; }
+    .breadcrumb-row .bc span { color:#4C5D8B; font-weight:600; }
+
+    .btn-export {
+      display:flex; align-items:center; gap:8px;
+      background:#1B1E47; color:#fff;
+      border:none; border-radius:10px;
+      padding:9px 18px; font-size:.85rem; font-weight:700;
+      cursor:pointer; font-family:'Inter',sans-serif;
+      transition:background .2s;
+    }
+    .btn-export:hover { background:#4C5D8B; }
+
+    @media print {
+      .app-nav, .breadcrumb-row { display:none !important; }
+      body { background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .panel { break-inside:avoid; border:1px solid #ccc !important; }
+      .stats-row { display:grid !important; grid-template-columns:1fr 1fr !important; }
+      .middle-row { display:grid !important; grid-template-columns:1fr 1fr !important; }
+      .bar-chart-table { width:100% !important; }
+      .alumno-fill-print { display:block !important; }
+    }
+
+    /* ── print-safe bar chart ── */
+    .bar-chart-table {
+      width:100%; border-collapse:collapse;
+      height:170px;
+    }
+    .bar-chart-table td {
+      vertical-align:bottom; text-align:center;
+      padding:0 8px; width:25%;
+    }
+    .bar-num {
+      font-size:.78rem; font-weight:700; color:#9176AB;
+      display:block; margin-bottom:4px;
+    }
+    .bar-block {
+      display:block;
+      background:#9176AB;
+      border-radius:6px 6px 0 0;
+      width:100%;
+    }
+    .bar-month {
+      font-size:.78rem; color:#6b7280; font-weight:600;
+      display:block; margin-top:6px;
+      border-top:2px solid #e5e7eb; padding-top:4px;
+    }
+
+    /* ── print-safe alumno bars ── */
+    .alumno-row { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+    .alumno-avatar {
+      width:36px; height:36px; border-radius:50%;
+      background:#c7bfe8; display:flex; align-items:center;
+      justify-content:center; font-weight:700; font-size:.78rem;
+      color:#1a2356; flex-shrink:0;
+    }
+    .alumno-bar-wrap {
+      flex:1; display:flex; align-items:center; gap:8px;
+    }
+    .alumno-track-outer {
+      flex:1; height:14px; background:#e5e7eb;
+      border-radius:99px; overflow:hidden;
+      position:relative;
+    }
+    .alumno-fill-print {
+      height:14px; background:#1B1E47;
+      border-radius:99px;
+      display:block;
+    }
+    .alumno-pct {
+      font-size:.78rem; font-weight:700; color:#6b7280;
+      min-width:34px; text-align:right;
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="app-nav">
+  <a class="app-logo" href="index.html">
+    <img src="images/logo.png" alt="EduSteam">
+    <span>EduSteam</span>
+  </a>
+
+  <div class="profile-dropdown">
+    <button class="avatar-btn" id="profileButton" aria-haspopup="true" aria-expanded="false">RC</button>
+
+    <div class="profile-menu" id="profileMenu" role="menu">
+      <div class="menu-title">Seleccionar perfil</div>
+      <button type="button" data-profile="Estudiante">Estudiante</button>
+      <button type="button" data-profile="Tutor">Tutor</button>
+      <button type="button" data-profile="Padre de Familia">Padre de Familia</button>
+    </div>
+  </div>
+  </nav>
+
+  <div class="breadcrumb-row">
+    <div class="bc">
+      <ul class="nav-links">
+      <li><a href="estadisticas_tutor.html">Estadísticas</a></li>
+      <li><a href="clases_tutor.html">Mis clases</a></li>
+      <li><a href="biblioteca_materiales.html">Biblioteca de materiales</a></li>
+      <li><a href="perfil_tutor.html">Perfil</a></li>
+    </ul>
+    </div>
+
+
+
+    <button class="btn-export" onclick="window.print()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Descargar reporte
+    </button>
+  </div>
+
+  <div class="page-body">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card-p">
+        <div class="label">Alumnos activos</div>
+        <div class="value">10</div>
+        <div class="sub">+2 este mes</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Sesiones completadas</div>
+        <div class="value">34</div>
+        <div class="sub">+6 este mes</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Calificación promedio</div>
+        <div class="value">4.9</div>
+        <div class="sub">73 reseñas</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Ingresos del mes</div>
+        <div class="value">S/ 420</div>
+        <div class="sub">+S/ 90 vs anterior</div>
+      </div>
+    </div>
+
+    <!-- MIDDLE -->
+    <div class="middle-row">
+
+      <!-- bar chart -->
+      <div class="panel">
+        <div class="panel-title">Sesiones por mes</div>
+        <table class="bar-chart-table">
+          <tbody>
+            <tr>
+              <td>
+                <span class="bar-num">18</span>
+                <span class="bar-block" style="height:80px"></span>
+                <span class="bar-month">Ene</span>
+              </td>
+              <td>
+                <span class="bar-num">22</span>
+                <span class="bar-block" style="height:100px"></span>
+                <span class="bar-month">Feb</span>
+              </td>
+              <td>
+                <span class="bar-num">28</span>
+                <span class="bar-block" style="height:124px"></span>
+                <span class="bar-month">Mar</span>
+              </td>
+              <td>
+                <span class="bar-num">34</span>
+                <span class="bar-block" style="height:150px"></span>
+                <span class="bar-month">Abr</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- alumnos activos -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title" style="margin-bottom:0">Mis alumnos activos</div>
+          <a class="ver-todas" href="#">Ver todas</a>
+        </div>
+
+        <div class="alumno-row">
+          <div class="alumno-avatar">RC</div>
+          <div class="alumno-bar-wrap">
+            <div class="alumno-track-outer"><span class="alumno-fill-print" style="width:78%"></span></div>
+            <span class="alumno-pct">78%</span>
+          </div>
+        </div>
+
+        <div class="alumno-row">
+          <div class="alumno-avatar">RC</div>
+          <div class="alumno-bar-wrap">
+            <div class="alumno-track-outer"><span class="alumno-fill-print" style="width:91%"></span></div>
+            <span class="alumno-pct">91%</span>
+          </div>
+        </div>
+
+        <div class="alumno-row">
+          <div class="alumno-avatar">RC</div>
+          <div class="alumno-bar-wrap">
+            <div class="alumno-track-outer"><span class="alumno-fill-print" style="width:55%"></span></div>
+            <span class="alumno-pct">55%</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- HISTORIAL INGRESOS -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title" style="margin-bottom:0">Historial de ingresos</div>
+        <a class="ver-todas" href="#">Ver todas</a>
+      </div>
+      <table class="income-table">
+        <thead>
+          <tr>
+            <th>Alumno</th>
+            <th>Materia</th>
+            <th>Fecha</th>
+            <th>Duración</th>
+            <th>Ingreso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Juan Garcia</td>
+            <td>Calculo I</td>
+            <td>05 mayo</td>
+            <td>1h</td>
+            <td>S/ 30</td>
+          </tr>
+          <tr>
+            <td>María López</td>
+            <td>Álgebra</td>
+            <td>03 mayo</td>
+            <td>1h</td>
+            <td>S/ 28</td>
+          </tr>
+          <tr>
+            <td>Pedro Ramos</td>
+            <td>Trigonometría</td>
+            <td>01 mayo</td>
+            <td>1.5h</td>
+            <td>S/ 42</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  <script>
+  const profileButton = document.getElementById('profileButton');
+  const profileMenu = document.getElementById('profileMenu');
+
+  if (profileButton && profileMenu) {
+    profileButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const expanded = profileButton.getAttribute('aria-expanded') === 'true';
+      profileButton.setAttribute('aria-expanded', String(!expanded));
+      profileMenu.classList.toggle('active');
+    });
+
+    const profileItems = profileMenu.querySelectorAll('button[data-profile]');
+    profileItems.forEach((item) => {
+      item.addEventListener('click', selectProfile);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!profileMenu.classList.contains('active')) return;
+      if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
+        profileMenu.classList.remove('active');
+        profileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  function selectProfile(event) {
+    const profile = event.currentTarget.dataset.profile;
+
+    const targetPages = {
+      'Estudiante': 'progreso.html',
+      'Tutor': 'estadisticas_tutor.html',
+      'Padre de Familia': 'seguimiento_padre.html'
+    };
+
+    profileMenu.classList.remove('active');
+    profileButton.setAttribute('aria-expanded', 'false');
+
+    if (targetPages[profile]) {
+      window.location.href = targetPages[profile];
+    }
+  }
+  </script>
+
+</body>
+</html>
