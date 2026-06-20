@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mis Clases - EduSteam</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background:#fff; }
+
+    .app-nav {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(20px,3vw,48px); height:64px;
+      border-bottom:1px solid #e5e7eb; background:#fff;
+    }
+    .app-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .app-logo img { width:36px; height:36px; }
+    .app-logo span { font-family:'El Messiri',sans-serif; font-size:1.7rem; font-weight:700; color:#1a2356; }
+    .avatar-btn {
+      width:40px; height:40px; border-radius:50%;
+      background:#c7bfe8; border:none; cursor:pointer;
+      font-family:'Inter',sans-serif; font-weight:700; font-size:.9rem; color:#1a2356;
+    }
+
+    .breadcrumb-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px clamp(20px,3vw,48px);
+      border-bottom:1px solid #e5e7eb;
+    }
+
+    .page-body {
+      padding:clamp(16px,2.5vw,36px) clamp(20px,3vw,48px);
+      display:flex; flex-direction:column; gap:24px;
+    }
+
+    /* CABECERA SEMANA */
+    .week-header {
+      display:flex; align-items:center; justify-content:space-between;
+    }
+    .week-title {
+      font-family:'El Messiri',sans-serif;
+      font-size:1.4rem; font-weight:700; color:#1a2356;
+    }
+    .week-nav { display:flex; align-items:center; gap:10px; }
+    .week-nav button {
+      background:#f3f4f6; border:none; border-radius:8px;
+      width:34px; height:34px; cursor:pointer; font-size:1rem; color:#1a2356;
+      display:flex; align-items:center; justify-content:center;
+      transition:background .2s;
+    }
+    .week-nav button:hover { background:#e5e7eb; }
+    .week-nav .week-label {
+      font-size:.92rem; font-weight:600; color:#4C5D8B;
+      min-width:160px; text-align:center;
+    }
+
+    /* RESUMEN */
+    .week-stats {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:14px;
+    }
+    .wstat {
+      border:1.5px solid #e5e7eb; border-radius:12px;
+      padding:14px 18px; background:#fff;
+      display:flex; align-items:center; gap:14px;
+    }
+    .wstat-icon {
+      width:42px; height:42px; border-radius:10px;
+      background:#f0edf8; display:flex; align-items:center; justify-content:center;
+      flex-shrink:0;
+    }
+    .wstat-info .wstat-val {
+      font-family:'El Messiri',sans-serif;
+      font-size:1.6rem; font-weight:700; color:#9176AB; line-height:1;
+    }
+    .wstat-info .wstat-lbl {
+      font-size:.78rem; color:#6b7280; font-weight:500; margin-top:3px;
+    }
+
+    /* CALENDARIO SEMANAL */
+    .calendar-panel {
+      border:1.5px solid #e5e7eb; border-radius:14px;
+      overflow:hidden;
+    }
+    .cal-head {
+      display:grid; grid-template-columns:60px repeat(7,1fr);
+      background:#f9fafb; border-bottom:1px solid #e5e7eb;
+    }
+    .cal-head-cell {
+      padding:10px 6px; text-align:center;
+      font-size:.78rem; font-weight:700; color:#6b7280;
+    }
+    .cal-head-cell.today { color:#9176AB; }
+    .cal-head-day {
+      font-size:1.1rem; font-weight:700;
+      display:block; line-height:1; margin-top:2px;
+    }
+    .cal-head-cell.today .cal-head-day {
+      background:#9176AB; color:#fff;
+      width:30px; height:30px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      margin:4px auto 0;
+    }
+
+    /* FILAS DE HORAS */
+    .cal-body { display:flex; flex-direction:column; }
+    .cal-row {
+      display:grid; grid-template-columns:60px repeat(7,1fr);
+      border-bottom:1px solid #f0f0f0; min-height:64px;
+    }
+    .cal-row:last-child { border-bottom:none; }
+    .cal-hour {
+      padding:8px 10px 0;
+      font-size:.72rem; color:#9ca3af; font-weight:500;
+      text-align:right; border-right:1px solid #f0f0f0;
+    }
+    .cal-cell {
+      border-right:1px solid #f0f0f0; position:relative;
+      padding:4px 5px;
+    }
+    .cal-cell:last-child { border-right:none; }
+
+    /* BLOQUE DE CLASE */
+    .clase-block {
+      border-radius:8px; padding:6px 8px;
+      cursor:pointer; transition:opacity .2s, transform .15s;
+      margin-bottom:3px;
+    }
+    .clase-block:hover { opacity:.88; transform:scale(1.02); }
+    .clase-block.mat { background:#e8e3f5; border-left:3px solid #9176AB; }
+    .clase-block.fis { background:#dbeafe; border-left:3px solid #3b82f6; }
+    .clase-block.qui { background:#dcfce7; border-left:3px solid #22c55e; }
+    .clase-block.his { background:#fef3c7; border-left:3px solid #f59e0b; }
+    .clase-block.ing { background:#fce7f3; border-left:3px solid #ec4899; }
+
+    .clase-title { font-size:.75rem; font-weight:700; color:#1a2356; line-height:1.2; }
+    .clase-alumno { font-size:.68rem; color:#6b7280; margin-top:2px; }
+
+    /* LISTA PRÓXIMAS CLASES */
+    .panel {
+      border:1.5px solid #e5e7eb; border-radius:14px;
+      padding:20px 22px;
+    }
+    .panel-header {
+      display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;
+    }
+    .panel-title {
+      font-family:'El Messiri',sans-serif;
+      font-size:1.1rem; font-weight:700; color:#4C5D8B;
+    }
+    .badge-hoy {
+      background:#f0edf8; color:#9176AB;
+      font-size:.72rem; font-weight:700;
+      border-radius:99px; padding:3px 10px;
+    }
+
+    .clase-item {
+      display:flex; align-items:center; gap:14px;
+      padding:12px 0; border-bottom:1px solid #f0f0f0;
+      cursor:pointer; transition:background .15s; border-radius:8px;
+    }
+    .clase-item:last-child { border-bottom:none; }
+    .clase-item:hover { background:#f9fafb; padding-left:6px; }
+
+    .clase-dot {
+      width:12px; height:12px; border-radius:50%; flex-shrink:0;
+    }
+    .dot-mat { background:#9176AB; }
+    .dot-fis { background:#3b82f6; }
+    .dot-qui { background:#22c55e; }
+    .dot-his { background:#f59e0b; }
+    .dot-ing { background:#ec4899; }
+
+    .clase-info { flex:1; }
+    .clase-info .ci-title { font-size:.92rem; font-weight:700; color:#1a2356; }
+    .clase-info .ci-sub { font-size:.78rem; color:#6b7280; margin-top:2px; }
+
+    .clase-hora {
+      font-size:.82rem; font-weight:700; color:#4C5D8B;
+      text-align:right; min-width:70px;
+    }
+    .btn-entrar {
+      background:#1B1E47; color:#fff;
+      border:none; border-radius:8px;
+      padding:7px 14px; font-size:.78rem; font-weight:700;
+      cursor:pointer; font-family:'Inter',sans-serif;
+      transition:background .2s; white-space:nowrap;
+    }
+    .btn-entrar:hover { background:#4C5D8B; }
+    .btn-entrar.pronto {
+      background:#f0edf8; color:#9176AB;
+      pointer-events:none;
+    }
+
+    @media(max-width:900px){
+      .week-stats { grid-template-columns:1fr 1fr; }
+      .cal-head, .cal-row { grid-template-columns:48px repeat(7,1fr); }
+    }
+    @media(max-width:640px){
+      .week-stats { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="app-nav">
+    <a class="app-logo" href="index.html">
+      <img src="images/logo.png" alt="EduSteam">
+      <span>EduSteam</span>
+    </a>
+    <div class="profile-dropdown">
+      <button class="avatar-btn" id="profileButton" aria-haspopup="true" aria-expanded="false">MP</button>
+      <div class="profile-menu" id="profileMenu" role="menu">
+        <div class="menu-title">Seleccionar perfil</div>
+        <button type="button" data-profile="Estudiante">Estudiante</button>
+        <button type="button" data-profile="Tutor">Tutor</button>
+        <button type="button" data-profile="Padre de Familia">Padre de Familia</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- SUBNAV TUTOR -->
+  <div class="breadcrumb-row">
+    <ul class="nav-links">
+      <li><a href="estadisticas_tutor.html">Estadísticas</a></li>
+      <li><a href="clases_tutor.html" class="active">Mis clases</a></li>
+      <li><a href="biblioteca_materiales.html">Biblioteca de materiales</a></li>
+      <li><a href="perfil_tutor.html">Perfil</a></li>
+    </ul>
+  </div>
+
+  <div class="page-body">
+
+    <!-- CABECERA SEMANA -->
+    <div class="week-header">
+      <div class="week-title">Mis clases de la semana</div>
+      <div class="week-nav">
+        <button id="btnPrev">&#8249;</button>
+        <span class="week-label" id="weekLabel">9 – 15 jun 2026</span>
+        <button id="btnNext">&#8250;</button>
+      </div>
+    </div>
+
+    <!-- RESUMEN SEMANA -->
+    <div class="week-stats">
+      <div class="wstat">
+        <div class="wstat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <rect x="3" y="4" width="18" height="18" rx="2" stroke="#9176AB" stroke-width="2"/>
+            <line x1="16" y1="2" x2="16" y2="6" stroke="#9176AB" stroke-width="2" stroke-linecap="round"/>
+            <line x1="8" y1="2" x2="8" y2="6" stroke="#9176AB" stroke-width="2" stroke-linecap="round"/>
+            <line x1="3" y1="10" x2="21" y2="10" stroke="#9176AB" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="wstat-info">
+          <div class="wstat-val" id="totalClases">7</div>
+          <div class="wstat-lbl">Clases esta semana</div>
+        </div>
+      </div>
+      <div class="wstat">
+        <div class="wstat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="#9176AB" stroke-width="2"/>
+            <polyline points="12 6 12 12 16 14" stroke="#9176AB" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="wstat-info">
+          <div class="wstat-val" id="totalHoras">8.5h</div>
+          <div class="wstat-lbl">Horas de tutoría</div>
+        </div>
+      </div>
+      <div class="wstat">
+        <div class="wstat-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" stroke="#9176AB" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="9" cy="7" r="4" stroke="#9176AB" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 00-3-3.87" stroke="#9176AB" stroke-width="2" stroke-linecap="round"/>
+            <path d="M16 3.13a4 4 0 010 7.75" stroke="#9176AB" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="wstat-info">
+          <div class="wstat-val" id="totalAlumnos">6</div>
+          <div class="wstat-lbl">Alumnos distintos</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CALENDARIO SEMANAL -->
+    <div class="calendar-panel">
+      <div class="cal-head">
+        <div class="cal-head-cell"></div>
+        <div class="cal-head-cell" id="hLun">
+          <span>LUN</span>
+          <span class="cal-head-day">9</span>
+        </div>
+        <div class="cal-head-cell" id="hMar">
+          <span>MAR</span>
+          <span class="cal-head-day">10</span>
+        </div>
+        <div class="cal-head-cell today" id="hMie">
+          <span>MIÉ</span>
+          <span class="cal-head-day">11</span>
+        </div>
+        <div class="cal-head-cell" id="hJue">
+          <span>JUE</span>
+          <span class="cal-head-day">12</span>
+        </div>
+        <div class="cal-head-cell" id="hVie">
+          <span>VIE</span>
+          <span class="cal-head-day">13</span>
+        </div>
+        <div class="cal-head-cell" id="hSab">
+          <span>SÁB</span>
+          <span class="cal-head-day">14</span>
+        </div>
+        <div class="cal-head-cell" id="hDom">
+          <span>DOM</span>
+          <span class="cal-head-day">15</span>
+        </div>
+      </div>
+
+      <div class="cal-body">
+        <!-- 08:00 -->
+        <div class="cal-row">
+          <div class="cal-hour">08:00</div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell">
+            <div class="clase-block mat" onclick="irASesion()">
+              <div class="clase-title">Matemáticas</div>
+              <div class="clase-alumno">Juan García</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell">
+            <div class="clase-block mat" onclick="irASesion()">
+              <div class="clase-title">Matemáticas</div>
+              <div class="clase-alumno">Laura Torres</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+        </div>
+        <!-- 10:00 -->
+        <div class="cal-row">
+          <div class="cal-hour">10:00</div>
+          <div class="cal-cell">
+            <div class="clase-block fis" onclick="irASesion()">
+              <div class="clase-title">Física</div>
+              <div class="clase-alumno">Pedro Ramos</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell">
+            <div class="clase-block qui" onclick="irASesion()">
+              <div class="clase-title">Química</div>
+              <div class="clase-alumno">Ana López</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell">
+            <div class="clase-block fis" onclick="irASesion()">
+              <div class="clase-title">Física</div>
+              <div class="clase-alumno">Pedro Ramos</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+        </div>
+        <!-- 12:00 -->
+        <div class="cal-row">
+          <div class="cal-hour">12:00</div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell">
+            <div class="clase-block his" onclick="irASesion()">
+              <div class="clase-title">Historia</div>
+              <div class="clase-alumno">Sofía Mendoza</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+        </div>
+        <!-- 14:00 -->
+        <div class="cal-row">
+          <div class="cal-hour">14:00</div>
+          <div class="cal-cell">
+            <div class="clase-block ing" onclick="irASesion()">
+              <div class="clase-title">Inglés</div>
+              <div class="clase-alumno">María López</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell">
+            <div class="clase-block qui" onclick="irASesion()">
+              <div class="clase-title">Química</div>
+              <div class="clase-alumno">Ana López</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+        </div>
+        <!-- 16:00 -->
+        <div class="cal-row">
+          <div class="cal-hour">16:00</div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell">
+            <div class="clase-block his" onclick="irASesion()">
+              <div class="clase-title">Historia</div>
+              <div class="clase-alumno">Sofía Mendoza</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell">
+            <div class="clase-block ing" onclick="irASesion()">
+              <div class="clase-title">Inglés</div>
+              <div class="clase-alumno">María López</div>
+            </div>
+          </div>
+          <div class="cal-cell"></div>
+          <div class="cal-cell"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRÓXIMAS CLASES HOY -->
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">Clases de hoy</div>
+        <span class="badge-hoy">Jueves 12 jun</span>
+      </div>
+
+      <div class="clase-item" onclick="irASesion()">
+        <div class="clase-dot dot-his"></div>
+        <div class="clase-info">
+          <div class="ci-title">Historia del Perú</div>
+          <div class="ci-sub">Sofía Mendoza · 1h</div>
+        </div>
+        <div class="clase-hora">12:00</div>
+        <button class="btn-entrar pronto">En 2h</button>
+      </div>
+
+      <div class="clase-item" onclick="irASesion()">
+        <div class="clase-dot dot-qui"></div>
+        <div class="clase-info">
+          <div class="ci-title">Química Orgánica</div>
+          <div class="ci-sub">Ana López · 1.5h</div>
+        </div>
+        <div class="clase-hora">14:00</div>
+        <button class="btn-entrar pronto">En 4h</button>
+      </div>
+
+      <div class="clase-item" onclick="irASesion()">
+        <div class="clase-dot dot-mat"></div>
+        <div class="clase-info">
+          <div class="ci-title">Matemáticas</div>
+          <div class="ci-sub">Juan García · 1h</div>
+        </div>
+        <div class="clase-hora">08:00</div>
+        <button class="btn-entrar">Entrar ahora</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Perfil dropdown
+    const profileButton = document.getElementById('profileButton');
+    const profileMenu   = document.getElementById('profileMenu');
+
+    if (profileButton && profileMenu) {
+      profileButton.addEventListener('click', e => {
+        e.stopPropagation();
+        const expanded = profileButton.getAttribute('aria-expanded') === 'true';
+        profileButton.setAttribute('aria-expanded', String(!expanded));
+        profileMenu.classList.toggle('active');
+      });
+      profileMenu.querySelectorAll('button[data-profile]').forEach(btn => {
+        btn.addEventListener('click', e => {
+          const map = { 'Estudiante':'progreso.html', 'Tutor':'estadisticas_tutor.html', 'Padre de Familia':'seguimiento_padre.html' };
+          profileMenu.classList.remove('active');
+          profileButton.setAttribute('aria-expanded','false');
+          if (map[e.currentTarget.dataset.profile]) window.location.href = map[e.currentTarget.dataset.profile];
+        });
+      });
+      document.addEventListener('click', e => {
+        if (!profileMenu.classList.contains('active')) return;
+        if (!profileButton.contains(e.target) && !profileMenu.contains(e.target)) {
+          profileMenu.classList.remove('active');
+          profileButton.setAttribute('aria-expanded','false');
+        }
+      });
+    }
+
+    // Navegar a sala de sesión
+    function irASesion() {
+      window.location.href = 'sala_sesiones.html';
+    }
+
+    // Navegación de semanas
+    let weekOffset = 0;
+    function renderWeek() {
+      const hoy   = new Date(2026, 5, 12); // viernes 12 jun 2026
+      const lunes = new Date(hoy);
+      lunes.setDate(hoy.getDate() - hoy.getDay() + 1 + weekOffset * 7);
+      const dom = new Date(lunes); dom.setDate(lunes.getDate() + 6);
+
+      const meses = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+      document.getElementById('weekLabel').textContent =
+        `${lunes.getDate()} – ${dom.getDate()} ${meses[dom.getMonth()]} ${dom.getFullYear()}`;
+
+      const dias = ['hLun','hMar','hMie','hJue','hVie','hSab','hDom'];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(lunes); d.setDate(lunes.getDate() + i);
+        const cell = document.getElementById(dias[i]);
+        const num  = cell.querySelector('.cal-head-day');
+        if (num) num.textContent = d.getDate();
+        // marcar hoy
+        const esHoy = d.toDateString() === hoy.toDateString() && weekOffset === 0;
+        cell.classList.toggle('today', esHoy);
+      }
+    }
+
+    document.getElementById('btnPrev').addEventListener('click', () => { weekOffset--; renderWeek(); });
+    document.getElementById('btnNext').addEventListener('click', () => { weekOffset++; renderWeek(); });
+    renderWeek();
+  </script>
+
+</body>
+</html>
