@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduSteam – Buscar Tutores</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR (idéntico al index) -->
+  <nav>
+    <a class="logo" href="index.html">
+      <img src="images/logo.png" alt="Logo EduSteam" class="logo-icon">
+      <span class="logo-text">EduSteam</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="buscar_tutores.html" class="active">Nuestros Maestros</a></li>
+      <li><a href="funciones.html">Funciones</a></li>
+      <li><a href="recursos.html">Recursos</a></li>
+      <li><a href="sobre_nosotros.html">Sobre nosotros</a></li>
+    </ul>
+    <button class="btn-login" onclick="window.location.href='iniciar_sesion.html'">Iniciar sesión</button>
+
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="search-main">
+
+    <h1 class="search-title">Buscar tutores</h1>
+
+    <!-- BARRA DE BÚSQUEDA -->
+    <div class="search-bar-wrap">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="8.5" cy="8.5" r="5.5" stroke="#9176AB" stroke-width="2"/>
+        <line x1="12.5" y1="12.5" x2="17" y2="17" stroke="#9176AB" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <input
+        id="searchInput"
+        class="search-bar"
+        type="text"
+        placeholder="Busca por materia, tutor o temas de estudio"
+      />
+      <button class="filter-btn" id="filterBtn" aria-label="Filtros">
+        <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
+          <line x1="1" y1="3" x2="21" y2="3" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+          <line x1="1" y1="9" x2="21" y2="9" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+          <line x1="1" y1="15" x2="21" y2="15" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="7" cy="3" r="2.5" fill="#fff" stroke="#1a2356" stroke-width="1.5"/>
+          <circle cx="15" cy="9" r="2.5" fill="#fff" stroke="#1a2356" stroke-width="1.5"/>
+          <circle cx="7" cy="15" r="2.5" fill="#fff" stroke="#1a2356" stroke-width="1.5"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- FILTROS ACTIVOS -->
+    <div class="filters-row">
+      <span class="filters-label">Filtros activos:</span>
+      <span class="filter-chip">Matemáticas <button class="chip-close" aria-label="Quitar filtro">×</button></span>
+      <span class="filter-chip">Preuniversitario <button class="chip-close" aria-label="Quitar filtro">×</button></span>
+      <span class="filter-chip">S/ 20 - 40 <button class="chip-close" aria-label="Quitar filtro">×</button></span>
+    </div>
+
+    <!-- GRID DE TUTORES -->
+    <div class="tutors-grid">
+
+      <!-- Card 1 -->
+      <div class="tutor-card">
+        <div class="card-header">
+          <div class="card-avatar" style="background:#c7bfe8;">MP</div>
+          <div class="card-info">
+            <span class="card-name">María Perez</span>
+            <span class="card-subject">Matemáticas - Física</span>
+          </div>
+        </div>
+        <div class="card-rating">
+          <span class="stars">★★★★★</span>
+          <span class="reviews">75 reseñas</span>
+        </div>
+        <p class="card-desc">Egresada de Ingeniería Civil, especialista en preparación preuniversitaria. +3 años de experiencia…</p>
+        <div class="card-tags">
+          <span class="tag">Preuniversitario</span>
+          <span class="tag">Universitario</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-price">S/ 35 x hora</span>
+          <span class="card-avail available">Disponible hoy</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-perfil">Ver perfil</button>
+          <button class="btn-contactar">Contactar</button>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="tutor-card">
+        <div class="card-header">
+          <div class="card-avatar" style="background:#b8d4e8;">RC</div>
+          <div class="card-info">
+            <span class="card-name">Roberto Castro</span>
+            <span class="card-subject">Algebra - Cálculo</span>
+          </div>
+        </div>
+        <div class="card-rating">
+          <span class="stars">★★★★☆</span>
+          <span class="reviews">97 reseñas</span>
+        </div>
+        <p class="card-desc">Estudiante de Matemáticas en PUCP, tutor con metodología personalizada y material propio…</p>
+        <div class="card-tags">
+          <span class="tag">Preuniversitario</span>
+          <span class="tag">Escolar</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-price">S/ 30 x hora</span>
+          <span class="card-avail available">Disponible hoy</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-perfil">Ver perfil</button>
+          <button class="btn-contactar">Contactar</button>
+        </div>
+      </div>
+
+      <!-- Card 3 – No disponible (borde destacado) -->
+      <div class="tutor-card tutor-card--highlighted">
+        <div class="card-header">
+          <div class="card-avatar" style="background:#e8d4c7;">AG</div>
+          <div class="card-info">
+            <span class="card-name">Ana gutiérrez</span>
+            <span class="card-subject">Geometría - Trigonometría</span>
+          </div>
+        </div>
+        <div class="card-rating">
+          <span class="stars">★★★☆☆</span>
+          <span class="reviews">67 reseñas</span>
+        </div>
+        <p class="card-desc">Docente universitaria con 5 años de experiencia en preparación para exámenes de admisión…</p>
+        <div class="card-tags">
+          <span class="tag">Preuniversitario</span>
+          <span class="tag">Universitario</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-price">S/ 40 x hora</span>
+          <span class="card-avail unavailable">No disponible</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-perfil">Ver perfil</button>
+          <button class="btn-ocupado" disabled>OCUPADO</button>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="tutor-card">
+        <div class="card-header">
+          <div class="card-avatar" style="background:#d4e8c7;">LV</div>
+          <div class="card-info">
+            <span class="card-name">Luis Vargas</span>
+            <span class="card-subject">Matemáticas - Estadísticas</span>
+          </div>
+        </div>
+        <div class="card-rating">
+          <span class="stars">★★★☆☆</span>
+          <span class="reviews">87 reseñas</span>
+        </div>
+        <p class="card-desc">Egresado de Estadística en UNI. Especializado en cursos universitarios de primer y segundo ciclo…</p>
+        <div class="card-tags">
+          <span class="tag">Preuniversitario</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-price">S/ 25 x hora</span>
+          <span class="card-avail available">Disponible hoy</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-perfil">Ver perfil</button>
+          <button class="btn-contactar">Contactar</button>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="tutor-card">
+        <div class="card-header">
+          <div class="card-avatar" style="background:#e8c7d4;">CM</div>
+          <div class="card-info">
+            <span class="card-name">Carmen Morales</span>
+            <span class="card-subject">Algebra - Cálculo II</span>
+          </div>
+        </div>
+        <div class="card-rating">
+          <span class="stars">★★★★☆</span>
+          <span class="reviews">66 reseñas</span>
+        </div>
+        <p class="card-desc">Profesora de secundaria con +4 años enseñando matemáticas avanzadas. Metodología visual y práctica…</p>
+        <div class="card-tags">
+          <span class="tag">Preuniversitario</span>
+          <span class="tag">Universitario</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-price">S/ 28 x hora</span>
+          <span class="card-avail available">Disponible hoy</span>
+        </div>
+        <div class="card-actions">
+          <button class="btn-perfil">Ver perfil</button>
+          <button class="btn-contactar">Contactar</button>
+        </div>
+      </div>
+
+      <!-- Card "Más tutores" -->
+      <div class="tutor-card more-card" tabindex="0" role="button" aria-label="Ver más tutores">
+        <div class="more-card-inner">
+          <svg width="56" height="64" viewBox="0 0 56 64" fill="none">
+            <ellipse cx="28" cy="22" rx="14" ry="14" fill="#c7bfe8"/>
+            <rect x="8" y="40" width="40" height="22" rx="8" fill="#c7bfe8"/>
+            <circle cx="28" cy="20" r="9" fill="#9176AB" opacity="0.35"/>
+            <ellipse cx="28" cy="19" rx="6" ry="7" fill="#9176AB" opacity="0.5"/>
+          </svg>
+          <span class="more-label">14 tutores más disponibles</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
