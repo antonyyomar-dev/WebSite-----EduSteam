@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear Cuenta - EduSteam</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<script src="script.js"></script>
+
+<body>
+
+  <nav>
+
+    <a class="logo" href="index.html">
+        <img src="images/logo.png" alt="Logo EduSteam" class="logo-icon">
+        <span class="logo-text">EduSteam</span>
+    </a>
+
+  </nav>
+
+  <div class="main">
+
+    <div class="left-panel">
+        <div class="left-logo-wrap">
+            <img src="images/logo.png" alt="Logo EduSteam">
+        </div>
+      
+      <h2 class="left-title">Únete a EduSteam</h2>
+      <p class="left-desc">Conéctate con más de +100 tutores verificados y mejora tu rendimiento académico</p>
+    </div>
+
+    <div class="right-panel">
+      <div class="form-container">
+
+        <h1 class="form-title">Crear cuenta</h1>
+        <p class="form-subtitle">Completa los datos para registrarte</p>
+
+        <label class="field-label">SOY:</label>
+        <div class="role-group">
+          <button class="role-btn active" onclick="setRole(this)">
+
+            <span class="role-tooltip">
+              Accede a tutorías personalizadas, reserva sesiones y realiza seguimiento a tu progreso académico.
+            </span>
+
+            <svg viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 2L2 9l14 7 14-7-14-7z" fill="#1a2356"/>
+              <path d="M6 12v7c0 2.5 4.5 5 10 5s10-2.5 10-5v-7" stroke="#1a2356" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <line x1="28" y1="9" x2="28" y2="18" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Estudiante
+          </button>
+
+
+          <button class="role-btn" onclick="setRole(this)">
+
+            <span class="role-tooltip">
+              Ofrece clases, administra tu disponibilidad y conecta con estudiantes.
+            </span>
+
+            <svg viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="22" height="16" rx="2" stroke="#1a2356" stroke-width="2"/>
+              <line x1="13" y1="18" x2="13" y2="24" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+              <line x1="8" y1="24" x2="18" y2="24" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="26" cy="20" r="4" fill="#1a2356"/>
+              <path d="M24.5 20l1 1 2-2" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Tutor
+          </button>
+
+
+          <button class="role-btn" onclick="setRole(this)">
+
+            <span class="role-tooltip">
+              Supervisa el avance académico de tus hijos y gestiona sus tutorías fácilmente.
+            </span>
+
+            <svg viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="11" cy="6" r="4" fill="#1a2356"/>
+              <circle cx="25" cy="6" r="4" fill="#1a2356"/>
+              <path d="M2 26c0-5 4-9 9-9s9 4 9 9" stroke="#1a2356" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M16 26c0-5 4-9 9-9s9 4 9 9" stroke="#1a2356" stroke-width="2" fill="none" stroke-linecap="round"/>
+            </svg>
+            Padre de familia
+          </button>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">NOMBRE</label>
+          <input type="text" placeholder=""/>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">CORREO ELECTRÓNICO</label>
+          <input type="email" placeholder=""/>
+        </div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label">CONTRASEÑA</label>
+            <input type="password" placeholder=""/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">CONFIRMAR CONTRASEÑA</label>
+            <input type="password" placeholder=""/>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label">NIVEL ACADÉMICO</label>
+          <input type="text" placeholder=""/>
+        </div>
+
+        <button class="btn-crear">CREAR CUENTA</button>
+
+        <p class="login-link">&#xBF;Ya tienes una cuenta? <a href="iniciar_sesion.html">Inicia sesión</a></p>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function setRole(btn) {
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+
+</body>
+</html>
