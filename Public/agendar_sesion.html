@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduSteam – Agendar sesión</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f9fb;
+      color: #1a2356;
+    }
+
+    /* ─── NAVBAR ─── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(24px, 3.5vw, 80px);
+      height: clamp(60px, 5vh, 72px);
+      border-bottom: 1px solid #e5e7eb;
+      background: #fff;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-text {
+      font-family: 'El Messiri', sans-serif;
+      font-size: 2rem; font-weight: 700; color: #1a2356;
+    }
+    .logo-icon-svg { width: 38px; height: 38px; }
+    .nav-links { display: flex; align-items: center; gap: clamp(20px, 2.5vw, 48px); list-style: none; }
+    .nav-links a { text-decoration: none; font-size: 0.9rem; font-weight: 400; color: #6b7280; transition: color .2s; }
+    .nav-links a.active { color: #9176AB; font-weight: 500; }
+    .nav-links a:hover { color: #1a2356; }
+    .nav-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: #4C5D8B; color: #fff;
+      font-size: 0.9rem; font-weight: 600;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ─── BREADCRUMB ─── */
+    .breadcrumb {
+      padding: 10px clamp(24px, 3.5vw, 80px);
+      font-size: 0.82rem; color: #6b7280;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex; align-items: center; gap: 6px;
+      background: #fff;
+    }
+    .breadcrumb a { color: #6b7280; text-decoration: none; }
+    .breadcrumb a:hover { color: #9176AB; }
+    .breadcrumb-sep { color: #9ca3af; }
+    .breadcrumb-current { color: #9176AB; font-weight: 500; }
+
+    /* ─── LAYOUT PRINCIPAL ─── */
+    .agendar-main {
+      display: grid;
+      grid-template-columns: 1fr clamp(280px, 30vw, 370px);
+      gap: clamp(20px, 2vw, 32px);
+      padding: clamp(24px, 2.5vw, 40px) clamp(24px, 3.5vw, 80px);
+      align-items: start;
+    }
+
+    /* ─── CALENDARIO ─── */
+    .calendario-wrap {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      padding: clamp(22px, 2.2vw, 38px) clamp(20px, 2vw, 36px);
+    }
+    .cal-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .cal-nav-btn {
+      background: #fff;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      padding: 7px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; color: #1a2356;
+      cursor: pointer; transition: border-color .2s, background .2s;
+    }
+    .cal-nav-btn:hover { border-color: #9176AB; background: #f5f3fa; }
+    .cal-month-title {
+      font-family: 'El Messiri', sans-serif;
+      font-size: 1.25rem; font-weight: 700; color: #1a2356;
+    }
+
+    /* Tabla */
+    .cal-table { width: 100%; border-collapse: separate; border-spacing: 0 3px; }
+    .cal-table thead th {
+      font-size: 0.82rem; color: #6b7280; font-weight: 500;
+      text-align: center; padding-bottom: 14px;
+    }
+    .cal-table tbody td { text-align: center; padding: 4px 3px; }
+
+    .cal-day {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px;
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      color: #1a2356; cursor: default;
+      border: 1.5px solid transparent;
+      transition: background .15s, border-color .15s, color .15s;
+      user-select: none;
+    }
+
+    /* Días con horarios disponibles */
+    .cal-day.disponible {
+      border-color: #c7bfe8;
+      background: #f5f3fa;
+      cursor: pointer;
+    }
+    .cal-day.disponible:hover {
+      background: #e8e3f0;
+      border-color: #9176AB;
+    }
+
+    /* Día seleccionado */
+    .cal-day.selected {
+      background: #1a2356 !important;
+      color: #fff !important;
+      border-color: #1a2356 !important;
+    }
+
+    /* Días fuera del mes */
+    .cal-day.otro-mes {
+      color: #d1d5db; background: transparent; border-color: transparent;
+    }
+
+    /* ─── COLUMNA DERECHA ─── */
+    .agendar-right {
+      display: flex; flex-direction: column;
+      gap: clamp(14px, 1.4vw, 20px);
+    }
+
+    /* ─── HORARIOS ─── */
+    .horarios-wrap {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      padding: clamp(16px, 1.6vw, 24px);
+    }
+    .horarios-titulo {
+      font-family: 'El Messiri', sans-serif;
+      font-size: 1.05rem; font-weight: 700; color: #1a2356;
+      margin-bottom: 4px;
+    }
+    .horarios-sub {
+      font-size: 0.8rem; color: #6b7280;
+      margin-bottom: 14px;
+    }
+    .horarios-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .horario-item {
+      padding: 12px 18px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 9px;
+      font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      color: #1a2356; cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    .horario-item:hover:not(.selected) { border-color: #9176AB; background: #faf9fc; }
+    .horario-item.selected {
+      background: #c7bfe8; border-color: #9176AB;
+      color: #1a2356; font-weight: 500;
+    }
+
+    /* ─── RESUMEN ─── */
+    .resumen-wrap {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 14px;
+      padding: clamp(16px, 1.6vw, 24px);
+    }
+    .resumen-titulo {
+      font-family: 'El Messiri', sans-serif;
+      font-size: 1rem; font-weight: 700; color: #1a2356;
+      margin-bottom: 16px;
+    }
+    .resumen-rows { display: flex; flex-direction: column; gap: 12px; margin-bottom: 18px; }
+    .resumen-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; }
+    .resumen-label { color: #6b7280; font-weight: 400; }
+    .resumen-value { color: #1a2356; font-weight: 600; }
+    .resumen-total { padding-top: 12px; border-top: 1px solid #e5e7eb; }
+    .resumen-total .resumen-label { color: #1a2356; font-weight: 500; }
+    .resumen-total .resumen-value { font-size: 0.95rem; }
+
+    .btn-confirmar {
+      width: 100%;
+      background: #1a2356; color: #fff; border: none;
+      border-radius: 9px; padding: 14px 0;
+      font-family: 'Inter', sans-serif; font-size: 0.92rem; font-weight: 600;
+      cursor: pointer; transition: opacity .2s; letter-spacing: 0.01em;
+    }
+    .btn-confirmar:hover { opacity: 0.87; }
+
+    /* Modal de confirmación centrado */
+    .confirm-modal {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      z-index: 1200; pointer-events: none; opacity: 0; transition: opacity .18s ease;
+    }
+    .confirm-modal.show { pointer-events: auto; opacity: 1; }
+    .confirm-modal-overlay {
+      position: absolute; inset: 0; background: rgba(7,10,18,0.48); backdrop-filter: blur(4px);
+      border-radius: 0;
+    }
+    .confirm-modal-box {
+      position: relative; background: linear-gradient(180deg,#ffffff,#fbf9ff);
+      padding: 22px; border-radius: 12px; width: min(560px,92%);
+      box-shadow: 0 18px 50px rgba(17,24,39,0.25); transform: translateY(-6px);
+      text-align: center; z-index: 2;
+    }
+    .confirm-modal.show .confirm-modal-box { transform: translateY(0); }
+    .confirm-modal-box h3 { margin-bottom: 8px; font-family: 'El Messiri', sans-serif; color: #1a2356; font-size: 1.15rem; }
+    .confirm-modal-box p { color: #374151; margin-bottom: 16px; font-weight: 600; }
+    .confirm-modal-actions { display:flex; gap:10px; justify-content:center; }
+    .btn-modal { background: linear-gradient(90deg,#9176AB,#6F5AAE); color: #fff; border: none; padding: 10px 18px; border-radius: 9px; cursor:pointer; font-weight:600; }
+    .btn-modal:focus { outline: 2px solid rgba(145,118,171,0.25); }
+    .btn-modal.secondary { background: transparent; color: #374151; border: 1px solid #e6e2ef; }
+
+    @media (max-width: 860px) {
+      .agendar-main { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav>
+    <a href="index.html" class="logo">
+      <svg class="images/logo.png" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="52" height="52" rx="10" fill="#4C5D8B"/>
+        <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
+              font-family="El Messiri,sans-serif" font-size="22" font-weight="700" fill="#fff">E</text>
+      </svg>
+      <span class="logo-text">EduSteam</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="buscar_tutores.html" class="active">Nuestros Maestros</a></li>
+      <li><a href="funciones.html">Funciones</a></li>
+      <li><a href="#">Recursos</a></li>
+      <li><a href="sobre_nosotros.html">Sobre nosotros</a></li>
+    </ul>
+    <div class="nav-avatar">JH</div>
+  </nav>
+
+  <!-- ─── BREADCRUMB ─── -->
+  <div class="breadcrumb">
+    <a href="buscar_tutores.html">Busca Tutores</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="perfil_usuario.html">Perfil</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current">Agendar sesión</span>
+  </div>
+
+  <!-- ─── CONTENIDO PRINCIPAL ─── -->
+  <main class="agendar-main">
+
+    <!-- Columna izquierda: Calendario -->
+    <section class="calendario-wrap">
+      <div class="cal-header">
+        <button class="cal-nav-btn" id="btnAnterior">&lt; Anterior</button>
+        <span class="cal-month-title" id="calMonthTitle">Mayo 2026</span>
+        <button class="cal-nav-btn" id="btnSiguiente">Siguiente &gt;</button>
+      </div>
+      <table class="cal-table">
+        <thead>
+          <tr>
+            <th>Lu</th><th>Ma</th><th>Mi</th><th>Ju</th><th>Vi</th><th>Sa</th><th>Do</th>
+          </tr>
+        </thead>
+        <tbody id="calBody"></tbody>
+      </table>
+    </section>
+
+    <!-- Columna derecha -->
+    <div class="agendar-right">
+
+      <section class="horarios-wrap">
+        <h2 class="horarios-titulo" id="horariosTitulo">Lunes 12 de mayo</h2>
+        <p class="horarios-sub">Horarios disponibles</p>
+        <ul class="horarios-list" id="horariosList"></ul>
+      </section>
+
+      <section class="resumen-wrap">
+        <h2 class="resumen-titulo">Resumen de reserva</h2>
+        <div class="resumen-rows">
+          <div class="resumen-row">
+            <span class="resumen-label">Tutor</span>
+            <span class="resumen-value">Roberto Carlos</span>
+          </div>
+          <div class="resumen-row">
+            <span class="resumen-label">Fecha</span>
+            <span class="resumen-value" id="resumenFecha">Lunes 12 mayo</span>
+          </div>
+          <div class="resumen-row">
+            <span class="resumen-label">Hora</span>
+            <span class="resumen-value" id="resumenHora">5:00 - 6:00 PM</span>
+          </div>
+          <div class="resumen-row resumen-total">
+            <span class="resumen-label">Total</span>
+            <span class="resumen-value">S/ 30,00</span>
+          </div>
+        </div>
+        <button class="btn-confirmar" id="btnConfirmar">Confirmar reserva - S/ 30</button>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Modal de confirmación centrado -->
+  <div id="confirmModal" class="confirm-modal" role="dialog" aria-modal="true" aria-hidden="true" tabindex="-1">
+    <div class="confirm-modal-overlay" aria-hidden="true"></div>
+    <div class="confirm-modal-box" role="document" aria-labelledby="confirmModalTitle">
+      <h3 id="confirmModalTitle">Reserva confirmada</h3>
+      <p id="confirmModalText">Tu reserva se ha realizado correctamente.</p>
+      <div class="confirm-modal-actions">
+        <button id="confirmModalClose" class="btn-modal">Aceptar</button>
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+    const MESES      = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    const MESES_C    = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const DIAS_L     = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+    const DISPONIBLES = new Set([5,7,8,11,12,13,14,15,18,19,20,21,22,25,26,27,28,29]);
+    const HORARIOS    = ['3:00 PM - 4:00 PM','4:00 PM - 5:00 PM','5:00 PM - 6:00 PM','6:00 PM - 7:00 PM'];
+
+    let viewYear  = 2026;
+    let viewMonth = 4; // mayo (0-based)
+    let selectedDay  = 12;
+    let selectedHora = '5:00 PM - 6:00 PM';
+
+    const calBody        = document.getElementById('calBody');
+    const calMonthTitle  = document.getElementById('calMonthTitle');
+    const horariosTitulo = document.getElementById('horariosTitulo');
+    const horariosList   = document.getElementById('horariosList');
+    const resumenFecha   = document.getElementById('resumenFecha');
+    const resumenHora    = document.getElementById('resumenHora');
+
+    function renderCalendar() {
+      calMonthTitle.textContent = `${MESES[viewMonth]} ${viewYear}`;
+      calBody.innerHTML = '';
+
+      const firstWeekday = new Date(viewYear, viewMonth, 1).getDay();
+      const startOffset  = firstWeekday === 0 ? 6 : firstWeekday - 1;
+      const daysInMonth  = new Date(viewYear, viewMonth + 1, 0).getDate();
+      const daysInPrev   = new Date(viewYear, viewMonth, 0).getDate();
+
+      let dayCount  = 1;
+      let nextCount = 1;
+
+      for (let row = 0; row < 6; row++) {
+        const tr = document.createElement('tr');
+        let hasDay = false;
+
+        for (let col = 0; col < 7; col++) {
+          const cell = row * 7 + col;
+          const td   = document.createElement('td');
+          const span = document.createElement('span');
+          span.classList.add('cal-day');
+
+          if (cell < startOffset) {
+            span.textContent = daysInPrev - startOffset + cell + 1;
+            span.classList.add('otro-mes');
+            hasDay = true;
+          } else if (dayCount <= daysInMonth) {
+            const d = dayCount;
+            span.textContent = d;
+            if (DISPONIBLES.has(d)) {
+              span.classList.add('disponible');
+              span.addEventListener('click', () => selectDay(d));
+            }
+            if (d === selectedDay) span.classList.add('selected');
+            dayCount++;
+            hasDay = true;
+          } else {
+            span.textContent = nextCount++;
+            span.classList.add('otro-mes');
+            hasDay = true;
+          }
+
+          td.appendChild(span);
+          tr.appendChild(td);
+        }
+
+        if (hasDay) calBody.appendChild(tr);
+        if (dayCount > daysInMonth && row >= 4) break;
+      }
+    }
+
+    function selectDay(d) {
+      selectedDay = d;
+      renderCalendar();
+      renderHorarios(d);
+    }
+
+    function renderHorarios(d) {
+      const fecha = new Date(viewYear, viewMonth, d);
+      horariosTitulo.textContent = `${DIAS_L[fecha.getDay()]} ${d} de ${MESES_C[viewMonth]}`;
+      selectedHora = HORARIOS[0];
+      horariosList.innerHTML = '';
+      HORARIOS.forEach(h => {
+        const li = document.createElement('li');
+        li.className = 'horario-item' + (h === selectedHora ? ' selected' : '');
+        li.dataset.hora = h;
+        li.textContent = h;
+        li.addEventListener('click', () => selectHora(h));
+        horariosList.appendChild(li);
+      });
+      updateResumen(d);
+    }
+
+    function selectHora(h) {
+      selectedHora = h;
+      horariosList.querySelectorAll('.horario-item').forEach(li => {
+        li.classList.toggle('selected', li.dataset.hora === h);
+      });
+      updateResumen(selectedDay);
+    }
+
+    function updateResumen(d) {
+      const fecha = new Date(viewYear, viewMonth, d);
+      resumenFecha.textContent = `${DIAS_L[fecha.getDay()]} ${d} ${MESES_C[viewMonth]}`;
+      // "5:00 PM - 6:00 PM" → "5:00 - 6:00 PM"
+      const parts = selectedHora.split(' - ');
+      resumenHora.textContent = parts[0].replace(' PM','').replace(' AM','') + ' - ' + parts[1];
+    }
+
+    document.getElementById('btnAnterior').addEventListener('click', () => {
+      viewMonth--; if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+      selectedDay = null; renderCalendar();
+    });
+    document.getElementById('btnSiguiente').addEventListener('click', () => {
+      viewMonth++; if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+      selectedDay = null; renderCalendar();
+    });
+
+    const btnConfirmar = document.getElementById('btnConfirmar');
+    const confirmModal = document.getElementById('confirmModal');
+    const confirmModalText = document.getElementById('confirmModalText');
+    const confirmModalClose = document.getElementById('confirmModalClose');
+
+    function openConfirmModal(text) {
+      if (confirmModalText) confirmModalText.textContent = text;
+      if (confirmModal) {
+        confirmModal.classList.add('show');
+        confirmModal.removeAttribute('aria-hidden');
+        confirmModal.focus();
+      }
+    }
+
+    function closeConfirmModal() {
+      if (confirmModal) {
+        confirmModal.classList.remove('show');
+        confirmModal.setAttribute('aria-hidden', 'true');
+      }
+    }
+
+    if (btnConfirmar) {
+      btnConfirmar.addEventListener('click', () => {
+        const msg = `Reserva confirmada — Fecha: ${resumenFecha.textContent} · Hora: ${resumenHora.textContent}`;
+        openConfirmModal(msg);
+      });
+    }
+
+    if (confirmModalClose) confirmModalClose.addEventListener('click', closeConfirmModal);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeConfirmModal(); });
+
+    // Init
+    renderCalendar();
+    renderHorarios(selectedDay);
+  </script>
+</body>
+</html>

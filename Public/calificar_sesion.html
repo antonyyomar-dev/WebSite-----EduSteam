@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calificar Sesión - EduSteam</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background:#fff; }
+
+    .app-nav {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(20px,3vw,48px); height:64px;
+      border-bottom:1px solid #e5e7eb; background:#fff;
+    }
+    .app-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .app-logo img { width:36px; height:36px; }
+    .app-logo span { font-family:'El Messiri',sans-serif; font-size:1.7rem; font-weight:700; color:#1a2356; }
+    .avatar-btn {
+      width:40px; height:40px; border-radius:50%;
+      background:#c7bfe8; border:none; cursor:pointer;
+      font-family:'Inter',sans-serif; font-weight:700; font-size:.9rem; color:#1a2356;
+    }
+    .breadcrumb {
+      padding:10px clamp(20px,3vw,48px);
+      font-size:.85rem; color:#6b7280;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .breadcrumb a { color:#6b7280; text-decoration:none; }
+    .breadcrumb span { color:#1a2356; font-weight:500; }
+
+    .page-body {
+      padding:clamp(20px,3vw,48px) clamp(20px,3vw,48px);
+      display:flex; justify-content:center;
+    }
+
+    .rating-card {
+      border:1.5px solid #d1d5db;
+      border-radius:16px;
+      padding:36px 40px;
+      width:100%; max-width:680px;
+      background:#fff;
+    }
+
+    /* check icon */
+    .check-wrap {
+      width:64px; height:64px; border-radius:50%;
+      background:#a8d5b0;
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 16px;
+    }
+    .check-wrap svg { color:#fff; }
+
+    .session-done-title {
+      text-align:center;
+      font-family:'El Messiri',sans-serif;
+      font-size:1.4rem; font-weight:700; color:#4C5D8B;
+      margin-bottom:4px;
+    }
+    .session-done-sub {
+      text-align:center;
+      font-size:.85rem; color:#6b7280;
+      margin-bottom:22px;
+    }
+
+    /* tutor chip */
+    .tutor-chip {
+      display:flex; align-items:center; gap:14px;
+      background:#E8EAF0; border-radius:10px;
+      padding:14px 18px; margin-bottom:24px;
+      justify-content:center;
+    }
+    .tutor-initials {
+      width:42px; height:42px; border-radius:50%;
+      background:#c7bfe8;
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:1rem; color:#1a2356;
+      flex-shrink:0;
+    }
+    .tutor-name { font-weight:700; font-size:.95rem; color:#1a2356; text-align:center; }
+    .tutor-subject { font-size:.8rem; color:#6b7280; text-align:center; }
+
+    /* section label */
+    .section-label {
+      font-family:'El Messiri',sans-serif;
+      font-size:1rem; font-weight:700; color:#4C5D8B;
+      margin-bottom:12px;
+    }
+
+    /* stars */
+    .star-row {
+      display:flex; gap:10px; justify-content:center;
+      margin-bottom:24px;
+    }
+    .star {
+      font-size:2rem; color:#d1d5db; cursor:pointer;
+      transition:color .15s;
+    }
+    .star.filled { color:#9176AB; }
+    .star:hover { color:#9176AB; }
+
+    /* aspect chips */
+    .aspect-chips {
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-bottom:24px;
+    }
+    .aspect-chip {
+      border:1.5px solid #1a2356; border-radius:99px;
+      padding:7px 18px; font-size:.85rem; font-weight:500;
+      color:#1a2356; background:#fff; cursor:pointer;
+      font-family:'Inter',sans-serif; transition:.15s;
+    }
+    .aspect-chip:hover, .aspect-chip.active {
+      background:#1a2356; color:#fff;
+    }
+
+    /* textarea */
+    .comment-area {
+      width:100%; height:100px;
+      border:1.5px solid #d1d5db; border-radius:10px;
+      padding:12px 14px; font-family:'Inter',sans-serif;
+      font-size:.9rem; color:#1a2356;
+      resize:none; outline:none;
+      margin-bottom:24px;
+    }
+    .comment-area:focus { border-color:#9176AB; }
+
+    /* submit btn */
+    .btn-submit {
+      display:block; width:100%;
+      background:#1B1E47; color:#fff;
+      border:none; border-radius:10px;
+      padding:14px; font-size:1rem; font-weight:700;
+      cursor:pointer; font-family:'Inter',sans-serif;
+      transition:background .2s;
+    }
+    .btn-submit:hover { background:#4C5D8B; }
+
+    @media(max-width:600px){
+      .rating-card { padding:24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="app-nav">
+    <a class="app-logo" href="index.html">
+      <img src="images/logo.png" alt="EduSteam">
+      <span>EduSteam</span>
+    </a>
+
+    <div class="profile-dropdown">
+      <button class="avatar-btn" id="profileButton" aria-haspopup="true" aria-expanded="false">RC</button>
+
+      <div class="profile-menu" id="profileMenu" role="menu">
+        <div class="menu-title">Seleccionar perfil</div>
+        <button type="button" data-profile="Estudiante">Estudiante</button>
+        <button type="button" data-profile="Tutor">Tutor</button>
+        <button type="button" data-profile="Padre de Familia">Padre de Familia</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb-row">
+  <div class="bc">
+     <ul class="nav-links">
+      <li><a href="progreso.html">Progreso </a></li>
+      <li><a href="saldo_pagos.html">Pagos </a></li>
+      <li><a href="calificar_sesion.html">Calificar Sesion</a></li>
+      <li><a href="mensajes.html">Chat</a></li>
+
+    </ul>
+    </div>
+  </div>
+
+
+  <div class="page-body">
+    <div class="rating-card">
+
+      <!-- Check -->
+      <div class="check-wrap">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+
+      <div class="session-done-title">Sesión completada</div>
+      <div class="session-done-sub">Cálculo I con Roberto Castro . Lun 12 mayo - 1 hora</div>
+
+      <!-- Tutor -->
+      <div class="tutor-chip">
+        <div class="tutor-initials">RC</div>
+        <div>
+          <div class="tutor-name">Roberto Castro</div>
+          <div class="tutor-subject">Algebra - Cálculo</div>
+        </div>
+      </div>
+
+      <!-- Estrellas -->
+      <div class="section-label">¿Como calificarías esta sesión?</div>
+      <div class="star-row" id="stars">
+        <span class="star" data-v="1">★</span>
+        <span class="star" data-v="2">★</span>
+        <span class="star" data-v="3">★</span>
+        <span class="star" data-v="4">★</span>
+        <span class="star" data-v="5">★</span>
+      </div>
+
+      <!-- Aspectos -->
+      <div class="section-label">¿Qué aspectos destacas?</div>
+      <div class="aspect-chips">
+        <button class="aspect-chip" onclick="toggleChip(this)">Explica bien</button>
+        <button class="aspect-chip" onclick="toggleChip(this)">Puntual</button>
+        <button class="aspect-chip" onclick="toggleChip(this)">Buen material</button>
+        <button class="aspect-chip" onclick="toggleChip(this)">Paciente</button>
+        <button class="aspect-chip" onclick="toggleChip(this)">Motivador</button>
+      </div>
+
+      <!-- Comentario -->
+      <div class="section-label">Comentario adicional (opcional)</div>
+      <textarea class="comment-area" placeholder="Escribe tu comentario aquí..."></textarea>
+
+      <button class="btn-submit">Enviar calificación</button>
+
+    </div>
+  </div>
+
+  <script>
+    // Stars
+    const stars = document.querySelectorAll('.star');
+    let selected = 0;
+    stars.forEach(s => {
+      s.addEventListener('click', () => {
+        selected = +s.dataset.v;
+        stars.forEach(st => st.classList.toggle('filled', +st.dataset.v <= selected));
+      });
+      s.addEventListener('mouseenter', () => {
+        stars.forEach(st => st.classList.toggle('filled', +st.dataset.v <= +s.dataset.v));
+      });
+      s.addEventListener('mouseleave', () => {
+        stars.forEach(st => st.classList.toggle('filled', +st.dataset.v <= selected));
+      });
+    });
+
+    // Aspect chips
+    function toggleChip(el) {
+      el.classList.toggle('active');
+    }
+  </script>
+  <script>
+  const profileButton = document.getElementById('profileButton');
+  const profileMenu = document.getElementById('profileMenu');
+
+  if (profileButton && profileMenu) {
+    profileButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const expanded = profileButton.getAttribute('aria-expanded') === 'true';
+      profileButton.setAttribute('aria-expanded', String(!expanded));
+      profileMenu.classList.toggle('active');
+    });
+
+    const profileItems = profileMenu.querySelectorAll('button[data-profile]');
+    profileItems.forEach((item) => {
+      item.addEventListener('click', selectProfile);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!profileMenu.classList.contains('active')) return;
+      if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
+        profileMenu.classList.remove('active');
+        profileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  function selectProfile(event) {
+    const profile = event.currentTarget.dataset.profile;
+
+    const targetPages = {
+      'Estudiante': 'perfil_estudiante.html',
+      'Tutor': 'estadisticas_turor.html',
+      'Padre de Familia': 'seguimiento_padre.html'
+    };
+
+    profileMenu.classList.remove('active');
+    profileButton.setAttribute('aria-expanded', 'false');
+
+    if (targetPages[profile]) {
+      window.location.href = targetPages[profile];
+    }
+  }
+  </script>
+</body>
+</html>
