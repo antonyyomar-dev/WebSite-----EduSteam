@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Progreso - EduSteam</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── layout ── */
+    body { background: #fff; }
+
+    .app-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px,3vw,48px);
+      height: 64px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #fff;
+    }
+    .app-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .app-logo img { width:36px; height:36px; }
+    .app-logo span { font-family:'El Messiri',sans-serif; font-size:1.7rem; font-weight:700; color:#1a2356; }
+
+    .avatar-btn {
+      width:40px; height:40px; border-radius:50%;
+      background:#c7bfe8; border:none; cursor:pointer;
+      font-family:'Inter',sans-serif; font-weight:700;
+      font-size:0.9rem; color:#1a2356;
+    }
+
+    .breadcrumb-row {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px clamp(20px,3vw,48px);
+      border-bottom:1px solid #e5e7eb;
+    }
+    .breadcrumb-row .bc { font-size:.85rem; color:#6b7280; }
+    .breadcrumb-row .bc a { color:#6b7280; text-decoration:none; }
+    .breadcrumb-row .bc span { color:#1a2356; font-weight:500; }
+
+    .btn-export {
+      display:flex; align-items:center; gap:8px;
+      background:#1B1E47; color:#fff;
+      border:none; border-radius:10px;
+      padding:9px 18px; font-size:.85rem; font-weight:700;
+      cursor:pointer; font-family:'Inter',sans-serif;
+      transition:background .2s;
+    }
+    .btn-export:hover { background:#4C5D8B; }
+
+    @media print {
+      .app-nav, .breadcrumb-row { display:none !important; }
+      body { background:#fff; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .panel, .feedback-section { break-inside:avoid; border:1px solid #ccc !important; }
+      .stats-row { display:grid !important; grid-template-columns:1fr 1fr !important; }
+      .middle-row { display:grid !important; grid-template-columns:1fr 1fr !important; }
+      .bar-fill { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+      .bar-rect { -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    }
+
+    .page-body {
+      padding: clamp(20px,2.5vw,40px) clamp(20px,3vw,48px);
+      display:flex; flex-direction:column; gap:24px;
+    }
+
+    /* ── stat cards ── */
+    .stats-row {
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:16px;
+    }
+    .stat-card-p {
+      border:1.5px solid #d1d5db;
+      border-radius:14px;
+      padding:20px 22px;
+      background:#fff;
+    }
+    .stat-card-p .label {
+      font-size:0.82rem; color:#6b7280; font-weight:500; margin-bottom:10px;
+    }
+    .stat-card-p .value {
+      font-family:'El Messiri',sans-serif;
+      font-size:2.6rem; font-weight:700;
+      color:#9176AB; line-height:1;
+    }
+
+    /* ── middle row ── */
+    .middle-row {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:20px;
+    }
+
+    .panel {
+      border:1.5px solid #d1d5db;
+      border-radius:14px;
+      padding:22px 24px;
+      background:#fff;
+    }
+    .panel-title {
+      font-family:'El Messiri',sans-serif;
+      font-size:1.25rem; font-weight:700;
+      color:#4C5D8B; margin-bottom:20px;
+    }
+
+    /* progress bars */
+    .subject-row { margin-bottom:16px; }
+    .subject-header {
+      display:flex; justify-content:space-between;
+      margin-bottom:6px;
+      font-size:0.88rem; color:#1a2356;
+    }
+    .subject-header span:last-child { font-weight:700; color:#1a2356; }
+    .bar-track {
+      height:12px; background:#e5e7eb; border-radius:99px; overflow:hidden;
+    }
+    .bar-fill {
+      height:100%; border-radius:99px;
+      background:#1B1E47;
+      transition: width 1s ease;
+    }
+
+    /* bar chart */
+    .bar-chart {
+      display:flex; align-items:flex-end; gap:16px;
+      height:150px; margin-bottom:12px;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 0;
+    }
+    .bar-col {
+      display:flex; flex-direction:column; align-items:center; gap:0;
+      flex:1;
+    }
+    .bar-rect {
+      width:100%; border-radius:6px 6px 0 0;
+      background:#9176AB;
+      display:block;
+    }
+    .bar-label { font-size:0.78rem; color:#6b7280; font-weight:600; margin-top:6px; }
+
+    .chart-footer {
+      font-size:0.85rem; color:#1a2356;
+      display:flex; gap:12px; align-items:center;
+      padding-top:12px; border-top:1px solid #e5e7eb;
+    }
+    .chart-footer strong { color:#4C5D8B; font-weight:700; }
+
+    /* feedback */
+    .feedback-section {
+      border:1.5px solid #d1d5db;
+      border-radius:14px;
+      padding:22px 24px;
+      background:#fff;
+    }
+    .feedback-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:16px;
+    }
+    .feedback-card {
+      border:1.5px solid #d1d5db;
+      border-radius:10px;
+      padding:14px 16px;
+    }
+    .feedback-card .fb-title {
+      font-size:0.82rem; font-weight:700; color:#1a2356; margin-bottom:6px;
+    }
+    .feedback-card p {
+      font-size:0.82rem; color:#6b7280; line-height:1.45;
+    }
+
+    @media(max-width:900px){
+      .stats-row { grid-template-columns:1fr 1fr; }
+      .middle-row { grid-template-columns:1fr; }
+      .feedback-grid { grid-template-columns:1fr; }
+    }
+    @media(max-width:520px){
+      .stats-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="app-nav">
+    <a class="app-logo" href="index.html">
+      <img src="images/logo.png" alt="EduSteam">
+      <span>EduSteam</span>
+    </a>
+
+    <div class="profile-dropdown">
+      <button class="avatar-btn" id="profileButton" aria-haspopup="true" aria-expanded="false">RC</button>
+
+      <div class="profile-menu" id="profileMenu" role="menu">
+        <div class="menu-title">Seleccionar perfil</div>
+        <button type="button" data-profile="Estudiante">Estudiante</button>
+        <button type="button" data-profile="Tutor">Tutor</button>
+        <button type="button" data-profile="Padre de Familia">Padre de Familia</button>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- BREADCRUMB + EXPORT -->
+  <div class="breadcrumb-row">
+    <div class="bc">
+    <ul class="nav-links">
+      <li><a href="progreso.html">Progreso </a></li>
+      <li><a href="saldo_pagos.html">Pagos </a></li>
+      <li><a href="calificar_sesion.html">Calificar Sesion</a></li>
+            <li><a href="mensajes.html">Chat</a></li>
+    </ul>
+    </div>
+    <button class="btn-export" onclick="window.print()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Descargar reporte
+    </button>
+  </div>
+
+  <!-- BODY -->
+  <div class="page-body">
+
+    <!-- STATS -->
+    <div class="stats-row">
+      <div class="stat-card-p">
+        <div class="label">Sesiones completadas</div>
+        <div class="value">12</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Horas de tutoría</div>
+        <div class="value">11.5</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Temas reforzados</div>
+        <div class="value">7</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Mejora en calificaciones</div>
+        <div class="value">+24%</div>
+      </div>
+    </div>
+
+    <!-- MIDDLE -->
+    <div class="middle-row">
+
+      <!-- Progreso por materia -->
+      <div class="panel">
+        <div class="panel-title">Progreso por materia</div>
+
+        <div class="subject-row">
+          <div class="subject-header"><span>Cálculo I</span><span>78%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:78%"></div></div>
+        </div>
+
+        <div class="subject-row">
+          <div class="subject-header"><span>Álgebra</span><span>65%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:65%"></div></div>
+        </div>
+
+        <div class="subject-row">
+          <div class="subject-header"><span>Trigonometría</span><span>90%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+        </div>
+      </div>
+
+      <!-- Evolución de notas -->
+      <div class="panel">
+        <div class="panel-title">Evolución de notas promedio de tutorías</div>
+
+        <div class="bar-chart">
+          <div class="bar-col">
+            <div class="bar-rect" style="height:70px"></div>
+            <div class="bar-label">Ene</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-rect" style="height:95px"></div>
+            <div class="bar-label">Feb</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-rect" style="height:115px"></div>
+            <div class="bar-label">Mar</div>
+          </div>
+          <div class="bar-col">
+            <div class="bar-rect" style="height:135px"></div>
+            <div class="bar-label">Abr</div>
+          </div>
+        </div>
+
+        <div class="chart-footer">
+          <span>Mejora del promedio antes:</span>
+          <strong>14.2 → 17.6</strong>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FEEDBACK -->
+    <div class="feedback-section">
+      <div class="panel-title">Retroalimentación recientes</div>
+      <div class="feedback-grid">
+        <div class="feedback-card">
+          <div class="fb-title">Sesión del 8 de mayo - Calculo I</div>
+          <p>Buen avance en límites. Reforzar derivadas implícitas para la próxima sesión</p>
+        </div>
+        <div class="feedback-card">
+          <div class="fb-title">Sesión del 5 de mayo - Álgebra</div>
+          <p>Excelente comprensión de vectores. Continuar con transformaciones lineales.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script>
+    const profileButton = document.getElementById('profileButton');
+    const profileMenu = document.getElementById('profileMenu');
+
+    if (profileButton && profileMenu) {
+      profileButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const expanded = profileButton.getAttribute('aria-expanded') === 'true';
+        profileButton.setAttribute('aria-expanded', String(!expanded));
+        profileMenu.classList.toggle('active');
+      });
+
+      const profileItems = profileMenu.querySelectorAll('button[data-profile]');
+      profileItems.forEach((item) => {
+        item.addEventListener('click', selectProfile);
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!profileMenu.classList.contains('active')) return;
+        if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
+          profileMenu.classList.remove('active');
+          profileButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    function selectProfile(event) {
+      const profile = event.currentTarget.dataset.profile;
+
+      const targetPages = {
+        'Estudiante': 'perfil_estudiante.html',
+        'Tutor': 'estadisticas_tutor.html',
+        'Padre de Familia': 'seguimiento_padre.html'
+      };
+
+      profileMenu.classList.remove('active');
+      profileButton.setAttribute('aria-expanded', 'false');
+
+      if (targetPages[profile]) {
+        window.location.href = targetPages[profile];
+      }
+    }
+
+    function selectProfile(event) {
+      const profile = event.currentTarget.dataset.profile;
+      if (!profile) return;
+      const targetPages = {
+        'Estudiante': 'progreso.html',
+        'Tutor': 'estadisticas_tutor.html',
+        'Padre de Familia': 'seguimiento_padre.html'
+      };
+      profileMenu.classList.remove('active');
+      profileButton.setAttribute('aria-expanded', 'false');
+      const targetPage = targetPages[profile];
+      if (targetPage) {
+        window.location.href = targetPage;
+      }
+    }
+  </script>
+</body>
+</html>
