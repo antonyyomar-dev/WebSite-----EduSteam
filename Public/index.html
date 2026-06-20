@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduSteam</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a class="logo" href="#">
+        <img src="images/logo.png" alt="Logo EduSteam" class="logo-icon">
+        <span class="logo-text">EduSteam</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html" class="active">Inicio</a></li>
+      <li><a href="buscar_tutores.html">Nuestros Maestros</a></li>
+      <li><a href="funciones.html">Funciones</a></li>
+      <li><a href="recursos.html">Recursos</a></li>
+      <li><a href="sobre_nosotros.html">Sobre nosotros</a></li>
+    </ul>
+
+    <button class="btn-login" onclick="window.location.href='iniciar_sesion.html'">Iniciar sesión</button>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="hero-text">
+      <span class="hero-line1">LA FORMA MÁS</span>
+      <span class="hero-line2">FÁCIL</span>
+      <span class="hero-line3">DE ENCONTRAR</span>
+      <span class="hero-line4">UN BUEN</span>
+      <span class="hero-line5">TUTOR</span>
+    </div>
+    <div class="hero-image-wrap">
+      <img
+        src="images/chico_estudiando.jpeg"
+        alt="Estudiante con tablet"
+        onerror="this.style.background='#c7bfe8';this.removeAttribute('src')"
+      />
+    </div>
+  </div>
+
+  <!-- ENCONTRAR PROFESOR BUTTON -->
+  <div class="btn-row">
+    <button class="btn-encontrar" onclick="window.location.href='buscar_tutores.html'">Encontrar Profesor</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <!-- Card 1: Stars -->
+    <div class="stat-card">
+      <span class="stat-stars">★★★★★</span>
+      <span class="stat-text">4.8/5 en satisfacción de<br>estudiantes</span>
+    </div>
+    <!-- Card 2: Graduation icon -->
+    <div class="stat-card">
+      <span class="stat-icon">
+        <svg width="32" height="28" viewBox="0 0 32 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 2L2 9l14 7 14-7-14-7z" fill="#1a2356"/>
+          <path d="M6 12v7c0 2.5 4.5 5 10 5s10-2.5 10-5v-7" stroke="#1a2356" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <line x1="28" y1="9" x2="28" y2="18" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </span>
+      <span class="stat-text">+500 estudiantes<br>ayudados</span>
+    </div>
+    <!-- Card 3: Monitor icon -->
+    <div class="stat-card">
+      <span class="stat-icon">
+        <svg width="34" height="28" viewBox="0 0 34 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="2" width="26" height="18" rx="2" stroke="#1a2356" stroke-width="2"/>
+          <line x1="15" y1="20" x2="15" y2="26" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+          <line x1="9" y1="26" x2="21" y2="26" stroke="#1a2356" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="28" cy="18" r="5" fill="#1a2356"/>
+          <path d="M26 18l1.5 1.5L30 16" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="stat-text">+100 tutores verificados</span>
+    </div>
+    <!-- Card 4: Video icon -->
+    <div class="stat-card">
+      <span class="stat-icon">
+        <svg width="36" height="26" viewBox="0 0 36 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="3" width="22" height="20" rx="3" fill="#1a2356"/>
+          <path d="M24 9l9-5v18l-9-5V9z" fill="#1a2356"/>
+        </svg>
+      </span>
+      <span class="stat-text">Miles de clases realizadas</span>
+    </div>
+  </div>
+
+</body>
+</html>
