@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EduSteam - Mensajes</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="mensajes.css">
+</head>
+
+<body class="mensajes-page">
+
+  <!-- NAVBAR -->
+  <nav>
+    <a class="logo" href="index.html">
+      <img src="images/logo.png" alt="Logo EduSteam" class="logo-icon">
+      <span class="logo-text">EduSteam</span>
+    </a>
+
+  
+
+    <div class="bc">
+    <ul class="nav-links">
+      <li><a href="progreso.html">Progreso </a></li>
+      <li><a href="saldo_pagos.html">Pagos </a></li>
+      <li><a href="calificar_sesion.html">Calificar Sesion</a></li>
+            <li><a href="mensajes.html">Chat</a></li>
+    </ul>
+    </div>
+
+    <div class="nav-avatar">JH</div>
+  </nav>
+
+  <!-- CHAT LAYOUT -->
+  <div class="chat-layout">
+
+    <!-- COLUMNA IZQUIERDA: lista de tutores -->
+    <aside class="chat-sidebar">
+      <h2 class="sidebar-title">Mis tutores</h2>
+
+      <div class="sidebar-search">
+        <svg class="search-icon-small" width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <circle cx="9" cy="9" r="7" stroke="#9ca3af" stroke-width="2"/>
+          <line x1="14.5" y1="14.5" x2="19" y2="19" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <ul class="tutor-list">
+        <li class="tutor-item active" data-chat="roberto">
+          <div class="tutor-avatar rc">RC</div>
+          <div class="tutor-info">
+            <span class="tutor-name">Roberto Castro</span>
+            <span class="tutor-preview">Te envié los ejerci...</span>
+          </div>
+        </li>
+        <li class="tutor-item" data-chat="maria">
+          <div class="tutor-avatar mp">MP</div>
+          <div class="tutor-info">
+            <span class="tutor-name">María Perez</span>
+            <span class="tutor-preview">Clase confirmado p...</span>
+          </div>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- COLUMNA CENTRAL: conversación -->
+    <main class="chat-main">
+
+      <!-- Header del chat -->
+      <div class="chat-header">
+        <span class="chat-tutor-name">Roberto Castro</span>
+        <span class="chat-status online">En línea</span>
+      </div>
+
+      <!-- Mensajes -->
+      <div class="chat-messages" id="chatMessages">
+
+        <div class="chat-date-divider">
+          <span>Hoy, 10 de mayo</span>
+        </div>
+
+        <!-- Mensaje tutor -->
+        <div class="msg-row msg-left">
+          <div class="msg-avatar rc">RC</div>
+          <div class="msg-bubble msg-tutor">
+            <p>Hola Joseph, aquí te dejo los ejercicios de Cálculo para la sesión de mañana. Repasa del ejercicio 1 al 5.</p>
+            <span class="msg-time">10:28 AM</span>
+          </div>
+        </div>
+
+        <!-- Archivo adjunto tutor -->
+        <div class="msg-row msg-left">
+          <div class="msg-avatar rc">RC</div>
+          <div class="msg-file msg-tutor-file">
+            <div class="file-info">
+              <svg class="file-doc-icon" width="22" height="26" viewBox="0 0 22 26" fill="none">
+                <rect x="1" y="1" width="20" height="24" rx="3" fill="#1a2356" stroke="#1a2356"/>
+                <rect x="4" y="7" width="14" height="2" rx="1" fill="white"/>
+                <rect x="4" y="11" width="14" height="2" rx="1" fill="white"/>
+                <rect x="4" y="15" width="9" height="2" rx="1" fill="white"/>
+              </svg>
+              <div>
+                <span class="file-name">Ejercicios_Calculo_Pr...</span>
+                <span class="file-type">PDF</span>
+              </div>
+            </div>
+            <button class="btn-download" aria-label="Descargar archivo">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 1v9M4 7l4 4 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 13h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <span class="msg-time-outside">10:30 AM</span>
+
+        <!-- Mensaje alumno -->
+        <div class="msg-row msg-right">
+          <div class="msg-bubble msg-student">
+            <p>Perfecto, ya los descargué. Tengo una duda del ejercicio 3, ¿lo vemos al inicio de la clase?</p>
+            <span class="msg-time">11:45 AM</span>
+          </div>
+          <div class="msg-avatar jh">JH</div>
+        </div>
+
+        <!-- Mensaje tutor -->
+        <div class="msg-row msg-left">
+          <div class="msg-avatar rc">RC</div>
+          <div class="msg-bubble msg-tutor">
+            <p>Claro, empezamos por ese. También te adjunto los apuntes del tema anterior para que repases.</p>
+            <span class="msg-time">11:50 PM</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Input de mensaje -->
+      <div class="chat-input-row">
+        <button class="btn-attach" aria-label="Adjuntar archivo">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M17 9l-7 7a5 5 0 01-7-7l7-7a3 3 0 014 4l-7 7a1 1 0 01-1.5-1.5L12 5" stroke="#1a2356" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <input
+          type="text"
+          id="msgInput"
+          class="chat-input"
+          placeholder="Escriba el mensaje..."
+          autocomplete="off"
+        />
+        <button class="btn-send" id="btnSend" aria-label="Enviar mensaje">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+            <path d="M10 18V4M4 10l6-6 6 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+    </main>
+
+    <!-- COLUMNA DERECHA: materiales -->
+    <aside class="chat-materials">
+      <h3 class="materials-title">Materiales recibidos</h3>
+
+      <!-- Filtros -->
+      <div class="materials-filters">
+        <button class="mat-filter active" data-filter="todos">Todos</button>
+        <button class="mat-filter" data-filter="pdf">PDF</button>
+        <button class="mat-filter" data-filter="imagenes">Imágenes</button>
+      </div>
+
+      <!-- Lista de archivos -->
+      <ul class="materials-list" id="materialsList">
+        <li class="material-item" data-type="pdf">
+          <div class="material-file-icon">
+            <svg width="18" height="22" viewBox="0 0 22 26" fill="none">
+              <rect x="1" y="1" width="20" height="24" rx="3" fill="#1a2356"/>
+              <rect x="4" y="7" width="14" height="2" rx="1" fill="white"/>
+              <rect x="4" y="11" width="14" height="2" rx="1" fill="white"/>
+              <rect x="4" y="15" width="9" height="2" rx="1" fill="white"/>
+            </svg>
+          </div>
+          <div class="material-info">
+            <span class="material-name">Ejercicios_Calculo_Pr...</span>
+            <span class="material-meta">PDF</span>
+          </div>
+          <button class="btn-download-mat" aria-label="Descargar">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v9M4 7l4 4 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 13h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </li>
+
+        <li class="material-item" data-type="pdf">
+          <div class="material-file-icon">
+            <svg width="18" height="22" viewBox="0 0 22 26" fill="none">
+              <rect x="1" y="1" width="20" height="24" rx="3" fill="#1a2356"/>
+              <rect x="4" y="7" width="14" height="2" rx="1" fill="white"/>
+              <rect x="4" y="11" width="14" height="2" rx="1" fill="white"/>
+              <rect x="4" y="15" width="9" height="2" rx="1" fill="white"/>
+            </svg>
+          </div>
+          <div class="material-info">
+            <span class="material-name">Apuntes_Clase_N°1...</span>
+            <span class="material-meta">PDF · 340 KB</span>
+          </div>
+          <button class="btn-download-mat" aria-label="Descargar">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v9M4 7l4 4 4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 13h12" stroke="white" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </li>
+      </ul>
+
+      <!-- Próxima sesión -->
+      <div class="proxima-sesion">
+        <div class="sesion-info">
+          <span class="sesion-label">Próxima sesión</span>
+          <span class="sesion-date">Lun 12 mayo · 5:00 PM</span>
+        </div>
+        <button class="btn-ingresar">INGRESAR</button>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <script>
+  const profileButton = document.getElementById('profileButton');
+  const profileMenu = document.getElementById('profileMenu');
+
+  if (profileButton && profileMenu) {
+    profileButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const expanded = profileButton.getAttribute('aria-expanded') === 'true';
+      profileButton.setAttribute('aria-expanded', String(!expanded));
+      profileMenu.classList.toggle('active');
+    });
+
+    const profileItems = profileMenu.querySelectorAll('button[data-profile]');
+    profileItems.forEach((item) => {
+      item.addEventListener('click', selectProfile);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!profileMenu.classList.contains('active')) return;
+      if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
+        profileMenu.classList.remove('active');
+        profileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  function selectProfile(event) {
+    const profile = event.currentTarget.dataset.profile;
+
+    const targetPages = {
+      'Estudiante': 'progreso.html',
+      'Tutor': 'estadisticas_tutor.html',
+      'Padre de Familia': 'seguimiento_padre.html'
+    };
+
+    profileMenu.classList.remove('active');
+    profileButton.setAttribute('aria-expanded', 'false');
+
+    if (targetPages[profile]) {
+      window.location.href = targetPages[profile];
+    }
+  }
+  </script>
+  <script src="script.js"></script>
+  <script src="mensajes.js"></script>
+</body>
+</html>

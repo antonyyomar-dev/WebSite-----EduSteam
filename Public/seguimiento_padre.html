@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seguimiento - EduSteam</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    body { background:#fff; }
+
+    .app-nav {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(20px,3vw,48px); height:64px;
+      border-bottom:1px solid #e5e7eb; background:#fff;
+    }
+    .app-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .app-logo img { width:36px; height:36px; }
+    .app-logo span { font-family:'El Messiri',sans-serif; font-size:1.7rem; font-weight:700; color:#1a2356; }
+    .avatar-btn {
+      width:40px; height:40px; border-radius:50%;
+      background:#c7bfe8; border:none; cursor:pointer;
+      font-family:'Inter',sans-serif; font-weight:700; font-size:.9rem; color:#1a2356;
+    }
+    .breadcrumb {
+      padding:10px clamp(20px,3vw,48px);
+      font-size:.85rem; color:#6b7280;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .breadcrumb a { color:#6b7280; text-decoration:none; }
+    .breadcrumb span { color:#4C5D8B; font-weight:600; }
+
+    .page-body {
+      padding:clamp(16px,2.5vw,36px) clamp(20px,3vw,48px);
+      display:flex; flex-direction:column; gap:20px;
+    }
+
+    /* student header card */
+    .student-card {
+      border:1.5px solid #d1d5db; border-radius:14px;
+      padding:18px 22px; background:#fff;
+      display:flex; align-items:center; gap:16px;
+    }
+    .student-avatar {
+      width:56px; height:56px; border-radius:50%;
+      background:#c7bfe8; display:flex; align-items:center;
+      justify-content:center; font-weight:700; font-size:1.1rem;
+      color:#1a2356; flex-shrink:0;
+    }
+    .student-name { font-family:'El Messiri',sans-serif; font-size:1.2rem; font-weight:700; color:#4C5D8B; }
+    .student-level { font-size:.85rem; color:#6b7280; margin-top:2px; }
+
+    /* stat cards */
+    .stats-row {
+      display:grid; grid-template-columns:repeat(4,1fr); gap:16px;
+    }
+    .stat-card-p {
+      border:1.5px solid #d1d5db; border-radius:14px;
+      padding:18px 20px; background:#fff;
+    }
+    .stat-card-p .label { font-size:.8rem; color:#1a2356; font-weight:600; margin-bottom:8px; }
+    .stat-card-p .value {
+      font-family:'El Messiri',sans-serif;
+      font-size:2.4rem; font-weight:700; color:#9176AB; line-height:1;
+    }
+
+    /* middle row */
+    .middle-row { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+
+    .panel {
+      border:1.5px solid #d1d5db; border-radius:14px;
+      padding:20px 22px; background:#fff;
+    }
+    .panel-title {
+      font-family:'El Messiri',sans-serif;
+      font-size:1.1rem; font-weight:700; color:#4C5D8B; margin-bottom:16px;
+    }
+
+    /* progress bars */
+    .subject-row { margin-bottom:14px; }
+    .subject-header {
+      display:flex; justify-content:space-between;
+      font-size:.85rem; color:#1a2356; margin-bottom:5px;
+    }
+    .subject-header span:last-child { font-weight:700; }
+    .bar-track { height:12px; background:#e5e7eb; border-radius:99px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:99px; background:#1B1E47; }
+
+    /* alert */
+    .alert-box {
+      background:#f8c4c4; border-radius:12px;
+      padding:16px 18px; display:flex; gap:14px; align-items:flex-start;
+      margin-bottom:16px;
+    }
+    .alert-icon {
+      width:38px; height:38px; border-radius:8px;
+      background:#e53935; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0;
+    }
+    .alert-title { font-weight:700; font-size:.95rem; color:#1a2356; margin-bottom:4px; }
+    .alert-desc { font-size:.83rem; color:#333; line-height:1.4; }
+
+    /* proximas sesiones */
+    .next-label {
+      font-family:'El Messiri',sans-serif;
+      font-size:1rem; font-weight:700; color:#1a2356; margin-bottom:10px;
+    }
+    .next-item {
+      display:flex; align-items:center; gap:12px;
+      background:#E8EAF0; border-radius:10px; padding:12px 14px;
+    }
+    .next-item svg { color:#4C5D8B; flex-shrink:0; }
+    .next-name { font-size:.88rem; font-weight:600; color:#1a2356; }
+    .next-detail { font-size:.78rem; color:#4C5D8B; font-weight:600; margin-top:1px; }
+
+    /* notificaciones */
+    .notif-header {
+      display:flex; justify-content:space-between; align-items:center;
+      margin-bottom:12px;
+    }
+    .notif-title { font-family:'El Messiri',sans-serif; font-size:1.1rem; font-weight:700; color:#4C5D8B; }
+    .notif-ver { font-size:.82rem; color:#9176AB; font-weight:600; cursor:pointer; text-decoration:none; }
+
+    .notif-item {
+      display:flex; align-items:center; gap:12px;
+      border:1.5px solid #d1d5db; border-radius:10px;
+      padding:12px 14px; margin-bottom:10px;
+    }
+    .notif-item.danger { background:#f8c4c4; border-color:#f8c4c4; }
+    .notif-item.success { background:#fff; }
+
+    .notif-icon-red {
+      width:32px; height:32px; border-radius:7px;
+      background:#e53935; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0;
+    }
+    .notif-icon-green {
+      width:32px; height:32px; border-radius:50%;
+      background:#a8d5b0; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0;
+    }
+    .notif-text { font-size:.88rem; font-weight:700; color:#1a2356; }
+
+    @media(max-width:900px){
+      .stats-row { grid-template-columns:1fr 1fr; }
+      .middle-row { grid-template-columns:1fr; }
+    }
+    @media(max-width:520px){
+      .stats-row { grid-template-columns:1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="app-nav">
+    <a class="app-logo" href="index.html">
+      <img src="images/logo.png" alt="EduSteam">
+      <span>EduSteam</span>
+    </a>
+    <div class="profile-dropdown">
+      <button class="avatar-btn" id="profileButton" aria-haspopup="true" aria-expanded="false">RC</button>
+      <div class="profile-menu" id="profileMenu" role="menu" aria-label="Opciones de perfil">
+        <div class="menu-title">Seleccionar perfil</div>
+        <button type="button" data-profile="Estudiante">Estudiante</button>
+        <button type="button" data-profile="Tutor">Tutor</button>
+        <button type="button" data-profile="Padre de Familia">Padre de Familia</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- BREADCRUMB + EXPORT -->
+  <div class="breadcrumb-row">
+    <div class="bc">
+    <ul class="nav-links">
+      <li><a href="seguimiento_padre.html">Seguimiento</a></li>
+      <li><a href="recomendaciones_padre.html">Análisis Hijos</a></li>
+      <li><a href="rutina_estudiante.html">Rutinas de Estudio</a></li>
+    </ul>
+    </div>
+    <button class="btn-export" onclick="window.print()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+        <polyline points="7 10 12 15 17 10"/>
+        <line x1="12" y1="15" x2="12" y2="3"/>
+      </svg>
+      Descargar reporte
+    </button>
+  </div>
+
+
+    <!-- student card -->
+    <div class="student-card">
+      <div class="student-avatar">AP</div>
+      <div>
+        <div class="student-name">Antony Peña</div>
+        <div class="student-level">Estudiante de secundaria</div>
+      </div>
+    </div>
+
+    <!-- stats -->
+    <div class="stats-row">
+      <div class="stat-card-p">
+        <div class="label">Sesiones de este mes</div>
+        <div class="value">8</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Promedio actual de calificaciones en tutoría</div>
+        <div class="value">16.2</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Tutores activos</div>
+        <div class="value">2</div>
+      </div>
+      <div class="stat-card-p">
+        <div class="label">Asistencias</div>
+        <div class="value">7</div>
+      </div>
+    </div>
+
+    <!-- middle -->
+    <div class="middle-row">
+
+      <!-- progreso -->
+      <div class="panel">
+        <div class="panel-title">Progreso por materia</div>
+        <div class="subject-row">
+          <div class="subject-header"><span>Geometría</span><span>42%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:42%"></div></div>
+        </div>
+        <div class="subject-row">
+          <div class="subject-header"><span>Álgebra</span><span>65%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:65%"></div></div>
+        </div>
+        <div class="subject-row">
+          <div class="subject-header"><span>Trigonometría</span><span>90%</span></div>
+          <div class="bar-track"><div class="bar-fill" style="width:90%"></div></div>
+        </div>
+      </div>
+
+      <!-- alertas + sesiones -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- alerta -->
+        <div class="panel" style="padding:16px 18px;">
+          <div class="alert-box">
+            <div class="alert-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="0">
+                <path d="M12 2L1 21h22L12 2zm0 4l7.5 13h-15L12 6zm-1 5v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="alert-title">Alerta de bajo rendimiento</div>
+              <div class="alert-desc">Juan tiene dificultades en Geometría (42%). Se recomienda contratar un tutor especializado.</div>
+            </div>
+          </div>
+
+          <div class="next-label">Próximas sesiones</div>
+          <div class="next-item">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+            <div>
+              <div class="next-name">Sesión con María Perez</div>
+              <div class="next-detail">Lun 12 mayo - en 3 horas</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- notificaciones -->
+    <div class="panel">
+      <div class="notif-header">
+        <div class="notif-title">Historial de notificaciones</div>
+        <a class="notif-ver" href="#">Ver todas</a>
+      </div>
+
+      <div class="notif-item danger">
+        <div class="notif-icon-red">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+            <path d="M12 2L1 21h22L12 2zm0 4l7.5 13h-15L12 6zm-1 5v4h2v-4h-2zm0 6v2h2v-2h-2z"/>
+          </svg>
+        </div>
+        <div class="notif-text">Bajo rendimiento detectado en Geometría</div>
+      </div>
+
+      <div class="notif-item success">
+        <div class="notif-icon-green">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div class="notif-text">Sesión completada con Roberto Castro</div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+  const profileButton = document.getElementById('profileButton');
+  const profileMenu = document.getElementById('profileMenu');
+
+  if (profileButton && profileMenu) {
+    profileButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      const expanded = profileButton.getAttribute('aria-expanded') === 'true';
+      profileButton.setAttribute('aria-expanded', String(!expanded));
+      profileMenu.classList.toggle('active');
+    });
+
+    const profileItems = profileMenu.querySelectorAll('button[data-profile]');
+    profileItems.forEach((item) => {
+      item.addEventListener('click', selectProfile);
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!profileMenu.classList.contains('active')) return;
+      if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
+        profileMenu.classList.remove('active');
+        profileButton.setAttribute('aria-expanded', 'false');
+      }
+    });
+  }
+
+  function selectProfile(event) {
+    const profile = event.currentTarget.dataset.profile;
+
+    const targetPages = {
+      'Estudiante': 'progreso.html',
+      'Tutor': 'estadisticas_tutor.html',
+      'Padre de Familia': 'seguimiento_padre.html'
+    };
+
+    profileMenu.classList.remove('active');
+    profileButton.setAttribute('aria-expanded', 'false');
+
+    if (targetPages[profile]) {
+      window.location.href = targetPages[profile];
+    }
+  }
+  </script>
+</body>
+</html>

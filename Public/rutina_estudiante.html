@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduSteam – Rutinas de Estudio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f9fb;
+      color: #1a2356;
+    }
+
+    /* ══ NAVBAR ══ */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 3vw, 48px);
+      height: 64px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+    .logo-text {
+      font-family: 'El Messiri', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #1a2356;
+    }
+
+    .logo-icon { width: 36px; height: 36px; }
+
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+
+    .nav-greeting { font-size: clamp(0.8rem, 0.86vw, 0.96rem); color: #6b7280; }
+    .nav-greeting strong { color: #1a2356; }
+
+    .nav-avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: #c7bfe8;
+      color: #1a2356;
+      font-size: 0.9rem; font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ══ SUBNAV ══ */
+    .breadcrumb-row {
+      display: flex;
+      align-items: center;
+      padding: 0 clamp(20px, 3vw, 48px);
+      border-bottom: 1px solid #e5e7eb;
+      background: #fff;
+    }
+
+    .sub-nav-links {
+      display: flex; align-items: center;
+      gap: 30px; list-style: none;
+    }
+
+    .sub-nav-links a {
+      display: block;
+      padding: 10px 0;
+      text-decoration: none;
+      color: #6b7280;
+      font-size: clamp(0.78rem, 0.85vw, 1.05rem);
+      font-weight: 400;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+    }
+
+    .sub-nav-links a:hover { color: #1a2356; }
+
+    .sub-nav-links a.sub-active {
+      color: #9176AB;
+      border-bottom-color: #9176AB;
+      font-weight: 500;
+    }
+
+    /* ══ HERO ══ */
+    .rec-hero {
+      background: linear-gradient(20deg, #ffffff);
+      padding: clamp(28px, 3vw, 52px) clamp(24px, 3.5vw, 80px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .rec-hero-text { display: flex; flex-direction: column; gap: 10px; }
+
+    .rec-hero-tag {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.15);
+      color: #302f2f;
+      font-size: clamp(0.7rem, 0.76vw, 0.86rem);
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 999px;
+      width: fit-content;
+      letter-spacing: 0.04em;
+    }
+
+    .rec-hero-title {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1.4rem, 2.2vw, 2.6rem);
+      font-weight: 700;
+      color: #39374d;
+      line-height: 1.2;
+    }
+
+    .rec-hero-title span { color: #39374d; }
+
+    .rec-hero-sub {
+      font-size: clamp(0.8rem, 0.88vw, 1rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    .alumno-selector {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(63,63,82,0.6);
+      border: 1.5px solid rgba(255,255,255,0.15);
+      border-radius: clamp(10px,1vw,16px);
+      padding: clamp(12px,1.2vw,20px) clamp(16px,1.6vw,24px);
+    }
+
+    .alumno-info { display: flex; flex-direction: column; gap: 2px; }
+    .alumno-label { font-size: 0.72rem; color: rgba(255,255,255,0.65); }
+    .alumno-name { font-size: 0.96rem; font-weight: 700; color: #fff; }
+    .alumno-grado { font-size: 0.78rem; color: rgba(255,255,255,0.75); }
+
+    /* ══ MAIN ══ */
+    .rec-main {
+      padding: clamp(24px,2.5vw,44px) clamp(24px,3.5vw,80px);
+      display: flex; flex-direction: column;
+      gap: clamp(24px,2.5vw,40px);
+    }
+
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .section-title {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1rem,1.15vw,1.3rem);
+      font-weight: 700; color: #1a2356;
+    }
+
+    .section-sub {
+      font-size: clamp(0.72rem,0.78vw,0.88rem);
+      color: #6b7280; margin-top: 3px;
+    }
+
+    .ver-todo-link {
+      font-size: clamp(0.72rem,0.78vw,0.88rem);
+      color: #9176AB; text-decoration: none; font-weight: 500;
+    }
+
+    .ver-todo-link:hover { text-decoration: underline; }
+
+    /* ══ AVISO ══ */
+    .rec-aviso {
+      background: linear-gradient(135deg, #f0edf7 0%, #e8f0fe 100%);
+      border: 1.5px solid #c7bfe8;
+      border-radius: clamp(10px,1vw,16px);
+      padding: clamp(14px,1.4vw,22px) clamp(18px,1.8vw,28px);
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 14px;
+    }
+
+    .aviso-icon {
+      width: 42px; height: 42px;
+      background: #4C5D8B; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .aviso-text { display: flex; flex-direction: column; gap: 3px; }
+
+    .aviso-title {
+      font-size: clamp(0.84rem,0.9vw,1rem);
+      font-weight: 600; color: #1a2356;
+    }
+
+    .aviso-desc {
+      font-size: clamp(0.72rem,0.78vw,0.88rem);
+      color: #4C5D8B; line-height: 1.5;
+    }
+
+    /* ══ RESUMEN SEMANA ══ */
+    .semana-grid {
+      display: grid;
+      grid-template-columns: repeat(4,1fr);
+      gap: clamp(12px,1.2vw,18px);
+    }
+
+    .semana-card {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: clamp(10px,1vw,16px);
+      padding: clamp(14px,1.4vw,20px);
+      display: flex; flex-direction: column; gap: 8px;
+    }
+
+    .semana-card-top {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+
+    .semana-icon-wrap {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .semana-valor {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1.5rem,1.8vw,2.2rem);
+      font-weight: 700; color: #1a2356; line-height: 1;
+    }
+
+    .semana-label {
+      font-size: clamp(0.8rem,0.86vw,0.96rem);
+      font-weight: 600; color: #1a2356;
+    }
+
+    .semana-desc {
+      font-size: clamp(0.68rem,0.74vw,0.82rem);
+      color: #6b7280;
+    }
+
+    .semana-bar-wrap {
+      height: 6px; background: #f3f4f6;
+      border-radius: 999px; overflow: hidden;
+    }
+
+    .semana-bar {
+      height: 100%; border-radius: 999px;
+    }
+
+    /* ══ CALENDARIO SEMANAL ══ */
+    .calendario-wrap {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: clamp(10px,1vw,16px);
+      overflow: hidden;
+    }
+
+    .cal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: clamp(12px,1.2vw,18px) clamp(16px,1.6vw,24px);
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .cal-nav-btn {
+      background: none; border: 1.5px solid #e5e7eb;
+      border-radius: 8px; width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #6b7280;
+      transition: border-color .2s;
+    }
+
+    .cal-nav-btn:hover { border-color: #9176AB; color: #9176AB; }
+
+    .cal-semana-label {
+      font-size: clamp(0.84rem,0.9vw,1rem);
+      font-weight: 600; color: #1a2356;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: 80px repeat(6,1fr);
+      min-height: 340px;
+    }
+
+    .cal-dia-header {
+      padding: clamp(8px,0.8vw,12px) 6px;
+      text-align: center;
+      border-bottom: 1px solid #e5e7eb;
+      border-right: 1px solid #f3f4f6;
+    }
+
+    .cal-dia-nombre {
+      font-size: clamp(0.7rem,0.75vw,0.84rem);
+      font-weight: 600; color: #6b7280;
+      text-transform: uppercase; letter-spacing: 0.04em;
+    }
+
+    .cal-dia-num {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1rem,1.1vw,1.3rem);
+      font-weight: 700; color: #1a2356;
+    }
+
+    .cal-dia-header.hoy .cal-dia-num {
+      background: #9176AB; color: #fff;
+      width: 28px; height: 28px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+
+    .cal-horas-col {
+      border-right: 1px solid #f3f4f6;
+    }
+
+    .cal-hora-slot {
+      height: 52px;
+      display: flex; align-items: center;
+      padding: 0 8px;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 0.68rem; color: #9ca3af;
+    }
+
+    .cal-dia-col {
+      border-right: 1px solid #f3f4f6;
+      position: relative;
+    }
+
+    .cal-slot-empty {
+      height: 52px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    /* Bloques de actividad */
+    .cal-bloque {
+      position: absolute;
+      left: 4px; right: 4px;
+      border-radius: 6px;
+      padding: 4px 7px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      line-height: 1.3;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .bloque--tutoria {
+      background: #e8e3f0; color: #4C5D8B;
+      border-left: 3px solid #9176AB;
+    }
+
+    .bloque--estudio {
+      background: #dbeafe; color: #1d4ed8;
+      border-left: 3px solid #3b82f6;
+    }
+
+    .bloque--descanso {
+      background: #dcfce7; color: #16a34a;
+      border-left: 3px solid #22c55e;
+    }
+
+    .bloque--libre {
+      background: #f3f4f6; color: #9ca3af;
+      border-left: 3px solid #d1d5db;
+    }
+
+    /* ══ LEYENDA ══ */
+    .leyenda {
+      display: flex; align-items: center;
+      gap: clamp(14px,1.4vw,24px);
+      padding: clamp(10px,1vw,14px) clamp(16px,1.6vw,24px);
+      border-top: 1px solid #e5e7eb;
+      flex-wrap: wrap;
+    }
+
+    .leyenda-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: clamp(0.68rem,0.74vw,0.82rem);
+      color: #6b7280;
+    }
+
+    .leyenda-dot {
+      width: 10px; height: 10px; border-radius: 2px;
+    }
+
+    /* ══ RECOMENDACIONES DE RUTINA ══ */
+    .rutina-list {
+      display: flex; flex-direction: column;
+      gap: clamp(10px,1vw,14px);
+    }
+
+    .rutina-item {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: clamp(10px,1vw,14px);
+      padding: clamp(14px,1.4vw,20px) clamp(16px,1.6vw,24px);
+      display: flex; align-items: center;
+      gap: clamp(12px,1.2vw,20px);
+    }
+
+    .rutina-num {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1.2rem,1.4vw,1.7rem);
+      font-weight: 700; color: #e5e7eb;
+      width: 28px; text-align: center; flex-shrink: 0;
+    }
+
+    .rutina-icon-wrap {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .rutina-info { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+
+    .rutina-titulo {
+      font-size: clamp(0.86rem,0.92vw,1.02rem);
+      font-weight: 600; color: #1a2356;
+    }
+
+    .rutina-desc {
+      font-size: clamp(0.72rem,0.78vw,0.88rem);
+      color: #6b7280; line-height: 1.5;
+    }
+
+    .rutina-badge {
+      font-size: clamp(0.65rem,0.7vw,0.78rem);
+      font-weight: 600; padding: 4px 12px;
+      border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+    }
+
+    .badge--estudio { background: #dbeafe; color: #1d4ed8; }
+    .badge--descanso { background: #dcfce7; color: #16a34a; }
+    .badge--repaso { background: #fef3c7; color: #d97706; }
+
+    /* ══ ALERTA REPROGRAMACION ══ */
+    .alerta-card {
+      background: #fff;
+      border: 1.5px solid #fde68a;
+      border-left: 4px solid #f59e0b;
+      border-radius: clamp(10px,1vw,14px);
+      padding: clamp(14px,1.4vw,20px) clamp(16px,1.6vw,24px);
+      display: flex; align-items: flex-start; gap: 14px;
+    }
+
+    .alerta-icon-wrap {
+      width: 38px; height: 38px;
+      background: #fef3c7; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+
+    .alerta-body { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+
+    .alerta-titulo {
+      font-size: clamp(0.86rem,0.92vw,1rem);
+      font-weight: 600; color: #1a2356;
+    }
+
+    .alerta-desc {
+      font-size: clamp(0.72rem,0.78vw,0.88rem);
+      color: #6b7280; line-height: 1.5;
+    }
+
+    .alerta-actions {
+      display: flex; gap: 8px; margin-top: 6px;
+    }
+
+    .btn-aceptar {
+      background: #1a2356; color: #fff;
+      border: none; border-radius: 7px;
+      padding: 7px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.72rem,0.76vw,0.86rem);
+      font-weight: 500; cursor: pointer;
+      transition: opacity .2s;
+    }
+
+    .btn-aceptar:hover { opacity: 0.85; }
+
+    .btn-revisar {
+      background: #fff; color: #1a2356;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 7px; padding: 7px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.72rem,0.76vw,0.86rem);
+      font-weight: 500; cursor: pointer;
+      transition: border-color .2s;
+    }
+
+    .btn-revisar:hover { border-color: #9176AB; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1100px) {
+      .semana-grid { grid-template-columns: repeat(2,1fr); }
+    }
+
+    @media (max-width: 720px) {
+      .rec-hero { flex-direction: column; align-items: flex-start; }
+      .semana-grid { grid-template-columns: repeat(2,1fr); }
+      .cal-grid { grid-template-columns: 60px repeat(6,1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .semana-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="Logo EduSteam" class="logo-icon" />
+      <span class="logo-text">EduSteam</span>
+    </a>
+    <div class="nav-right">
+      <span class="nav-greeting">Hola, <strong>Mamá / Papá</strong></span>
+      <div class="nav-avatar">JP</div>
+    </div>
+  </nav>
+
+  <!-- SUBNAV -->
+  <div class="breadcrumb-row">
+    <ul class="sub-nav-links">
+      <li><a href="seguimiento_padre.html">Seguimiento</a></li>
+      <li><a href="recomendaciones_padre.html">Análisis Estudiante</a></li>
+      <li><a href="rutina_estudiante.html" class="sub-active">Rutinas de Estudio</a></li>
+    </ul>
+  </div>
+
+  <!-- HERO -->
+  <div class="rec-hero">
+    <div class="rec-hero-text">
+      <span class="rec-hero-tag">📅 Semana actual</span>
+      <h1 class="rec-hero-title">Rutina de <span>estudio</span><br>de José</h1>    </div>
+    <div class="alumno-selector">
+      <div class="alumno-info">
+        <span class="alumno-label">Estudiante activo</span>
+        <span class="alumno-name">José Sánchez</span>
+        <span class="alumno-grado">4to de Secundaria · Turno tarde</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <main class="rec-main">
+
+    <!-- ALERTA DE REPROGRAMACIÓN -->
+    <div class="alerta-card">
+      <div class="alerta-icon-wrap">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="alerta-body">
+        <span class="alerta-titulo">Tutoría reprogramada — se actualizó la rutina</span>
+        <span class="alerta-desc">La sesión de Cálculo con Roberto Castro del martes 3pm fue cancelada. El sistema redistribuyó ese bloque como estudio autónomo de repaso el miércoles 4pm.</span>
+        <div class="alerta-actions">
+          <button class="btn-aceptar">Aceptar cambio</button>
+          <button class="btn-revisar">Revisar manualmente</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESUMEN DE LA SEMANA -->
+    <div>
+      <div class="section-header">
+        <div>
+          <p class="section-title">Resumen de la semana</p>
+          <p class="section-sub">Distribución de horas del 9 al 14 de junio</p>
+        </div>
+        <a href="#" class="ver-todo-link">Ver semana anterior →</a>
+      </div>
+      <div style="height:16px;"></div>
+      <div class="semana-grid">
+
+        <div class="semana-card">
+          <div class="semana-card-top">
+            <div class="semana-icon-wrap" style="background:#e8e3f0;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9176AB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            </div>
+            <span style="font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:#e8e3f0;color:#9176AB;">Esta semana</span>
+          </div>
+          <div class="semana-valor">4</div>
+          <div class="semana-label">Tutorías</div>
+          <div class="semana-desc">2 Cálculo · 1 Álgebra · 1 Física</div>
+          <div class="semana-bar-wrap"><div class="semana-bar" style="width:66%;background:#9176AB;"></div></div>
+        </div>
+
+        <div class="semana-card">
+          <div class="semana-card-top">
+            <div class="semana-icon-wrap" style="background:#dbeafe;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+            </div>
+            <span style="font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:#dbeafe;color:#1d4ed8;">+2h vs semana pasada</span>
+          </div>
+          <div class="semana-valor">12h</div>
+          <div class="semana-label">Estudio autónomo</div>
+          <div class="semana-desc">Bloques de 1–2h distribuidos</div>
+          <div class="semana-bar-wrap"><div class="semana-bar" style="width:75%;background:#3b82f6;"></div></div>
+        </div>
+
+        <div class="semana-card">
+          <div class="semana-card-top">
+            <div class="semana-icon-wrap" style="background:#dcfce7;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            </div>
+            <span style="font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:#dcfce7;color:#16a34a;">Óptimo</span>
+          </div>
+          <div class="semana-valor">8h</div>
+          <div class="semana-label">Descanso</div>
+          <div class="semana-desc">Bloques de 30–60 min entre sesiones</div>
+          <div class="semana-bar-wrap"><div class="semana-bar" style="width:80%;background:#22c55e;"></div></div>
+        </div>
+
+        <div class="semana-card">
+          <div class="semana-card-top">
+            <div class="semana-icon-wrap" style="background:#fef3c7;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <span style="font-size:0.72rem;font-weight:600;padding:2px 8px;border-radius:999px;background:#fef3c7;color:#d97706;">Libre</span>
+          </div>
+          <div class="semana-valor">6h</div>
+          <div class="semana-label">Tiempo libre</div>
+          <div class="semana-desc">Fines de semana y tardes cortas</div>
+          <div class="semana-bar-wrap"><div class="semana-bar" style="width:40%;background:#f59e0b;"></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CALENDARIO SEMANAL -->
+    <div>
+      <div class="section-header">
+        <div>
+          <p class="section-title">Calendario de esta semana</p>
+          <p class="section-sub">Lunes 9 — Sábado 14 de junio</p>
+        </div>
+      </div>
+      <div style="height:16px;"></div>
+
+      <div class="calendario-wrap">
+        <div class="cal-header">
+          <button class="cal-nav-btn">‹</button>
+          <span class="cal-semana-label">Semana del 9 al 14 de junio, 2026</span>
+          <button class="cal-nav-btn">›</button>
+        </div>
+
+        <div class="cal-grid">
+          <!-- Columna horas -->
+          <div class="cal-dia-header" style="border-bottom:1px solid #e5e7eb;"></div>
+          <div class="cal-dia-header"><div class="cal-dia-nombre">Lun</div><div class="cal-dia-num">9</div></div>
+          <div class="cal-dia-header"><div class="cal-dia-nombre">Mar</div><div class="cal-dia-num">10</div></div>
+          <div class="cal-dia-header hoy"><div class="cal-dia-nombre">Mié</div><div class="cal-dia-num">11</div></div>
+          <div class="cal-dia-header"><div class="cal-dia-nombre">Jue</div><div class="cal-dia-num">12</div></div>
+          <div class="cal-dia-header"><div class="cal-dia-nombre">Vie</div><div class="cal-dia-num">13</div></div>
+          <div class="cal-dia-header"><div class="cal-dia-nombre">Sáb</div><div class="cal-dia-num">14</div></div>
+
+          <!-- Horas -->
+          <div class="cal-horas-col">
+            <div class="cal-hora-slot">3pm</div>
+            <div class="cal-hora-slot">4pm</div>
+            <div class="cal-hora-slot">5pm</div>
+            <div class="cal-hora-slot">6pm</div>
+            <div class="cal-hora-slot">7pm</div>
+            <div class="cal-hora-slot">8pm</div>
+          </div>
+
+          <!-- Lunes -->
+          <div class="cal-dia-col" style="position:relative;">
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-bloque bloque--tutoria" style="top:4px;height:100px;">📘 Tutoría Álgebra<br>Roberto C.<br>3pm – 5pm</div>
+            <div class="cal-bloque bloque--descanso" style="top:108px;height:48px;">☕ Descanso</div>
+            <div class="cal-bloque bloque--estudio" style="top:160px;height:100px;">📖 Estudio autónomo<br>Ejercicios Álgebra</div>
+          </div>
+
+          <!-- Martes -->
+          <div class="cal-dia-col" style="position:relative;">
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-bloque bloque--libre" style="top:4px;height:48px;">Cancelado</div>
+            <div class="cal-bloque bloque--estudio" style="top:56px;height:100px;">📖 Repaso Cálculo<br>Autónomo 4–6pm</div>
+            <div class="cal-bloque bloque--descanso" style="top:160px;height:48px;">☕ Descanso</div>
+          </div>
+
+          <!-- Miércoles (hoy) -->
+          <div class="cal-dia-col" style="position:relative;">
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-bloque bloque--estudio" style="top:4px;height:48px;">📖 Repaso redistribuido</div>
+            <div class="cal-bloque bloque--tutoria" style="top:56px;height:100px;">📘 Tutoría Física<br>Laura M.<br>4pm – 6pm</div>
+            <div class="cal-bloque bloque--descanso" style="top:160px;height:48px;">☕ Descanso</div>
+          </div>
+
+          <!-- Jueves -->
+          <div class="cal-dia-col" style="position:relative;">
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-bloque bloque--tutoria" style="top:4px;height:100px;">📘 Tutoría Cálculo<br>Roberto C.<br>3pm – 5pm</div>
+            <div class="cal-bloque bloque--descanso" style="top:108px;height:48px;">☕ Descanso</div>
+            <div class="cal-bloque bloque--estudio" style="top:160px;height:100px;">📖 Repaso Física</div>
+          </div>
+
+          <!-- Viernes -->
+          <div class="cal-dia-col" style="position:relative;">
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-bloque bloque--estudio" style="top:4px;height:100px;">📖 Estudio libre<br>3pm – 5pm</div>
+            <div class="cal-bloque bloque--libre" style="top:108px;height:152px;">🎮 Tiempo libre</div>
+          </div>
+
+          <!-- Sábado -->
+          <div class="cal-dia-col" style="position:relative;">
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-slot-empty"></div>
+            <div class="cal-bloque bloque--libre" style="top:4px;height:308px;">🎮 Tiempo libre</div>
+          </div>
+
+        </div>
+
+        <!-- LEYENDA -->
+        <div class="leyenda">
+          <span class="leyenda-item"><span class="leyenda-dot" style="background:#9176AB;"></span>Tutoría</span>
+          <span class="leyenda-item"><span class="leyenda-dot" style="background:#3b82f6;"></span>Estudio autónomo</span>
+          <span class="leyenda-item"><span class="leyenda-dot" style="background:#22c55e;"></span>Descanso</span>
+          <span class="leyenda-item"><span class="leyenda-dot" style="background:#d1d5db;"></span>Libre / cancelado</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECOMENDACIONES DE RUTINA -->
+    <div>
+      <div class="section-header">
+        <div>
+          <p class="section-title">Sugerencias del sistema</p>
+          <p class="section-sub">Basadas en la carga académica y el rendimiento actual</p>
+        </div>
+      </div>
+      <div style="height:16px;"></div>
+
+      <div class="rutina-list">
+
+        <div class="rutina-item">
+          <div class="rutina-num">1</div>
+          <div class="rutina-icon-wrap" style="background:#fee2e2;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="rutina-info">
+            <span class="rutina-titulo">Priorizar Cálculo todos los días</span>
+            <span class="rutina-desc">Con nota 08/20, se recomienda al menos 1h de repaso diario. Ideal antes de cada tutoría para aprovechar mejor la sesión.</span>
+          </div>
+          <span class="rutina-badge badge--repaso">Urgente</span>
+        </div>
+
+        <div class="rutina-item">
+          <div class="rutina-num">2</div>
+          <div class="rutina-icon-wrap" style="background:#dbeafe;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+          </div>
+          <div class="rutina-info">
+            <span class="rutina-titulo">Bloques de estudio de máximo 90 min</span>
+            <span class="rutina-desc">Estudiar más de 2h seguidas reduce la retención. Se recomienda pausas de 15–20 min entre bloques.</span>
+          </div>
+          <span class="rutina-badge badge--estudio">Estudio</span>
+        </div>
+
+        <div class="rutina-item">
+          <div class="rutina-num">3</div>
+          <div class="rutina-icon-wrap" style="background:#dcfce7;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 010 8h-1"/><path d="M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+          </div>
+          <div class="rutina-info">
+            <span class="rutina-titulo">Respetar el tiempo libre del sábado</span>
+            <span class="rutina-desc">El descanso es parte del aprendizaje. No programar tutorías ni estudio formal el sábado ayuda a la consolidación de la memoria.</span>
+          </div>
+          <span class="rutina-badge badge--descanso">Descanso</span>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    /* Aceptar cambio de tutoría */
+    document.querySelector('.btn-aceptar').addEventListener('click', function () {
+      this.closest('.alerta-card').style.opacity = '0';
+      this.closest('.alerta-card').style.transition = 'opacity .4s';
+      setTimeout(() => this.closest('.alerta-card').remove(), 400);
+    });
+
+    /* Navegación semana (placeholder) */
+    document.querySelectorAll('.cal-nav-btn').forEach((btn, i) => {
+      btn.addEventListener('click', () => {
+        console.log(i === 0 ? 'Semana anterior' : 'Semana siguiente');
+      });
+    });
+  </script>
+
+</body>
+</html>
