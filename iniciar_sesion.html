@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - EduSteam</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/Public/Assets/Styles/styles.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <nav>
+
+        <a class="logo" href="index.html">
+            <img src="Public/Assets/Images/logo.png" alt="Logo EduSteam" class="logo-icon">
+            <span class="logo-text">EduSteam</span>
+        </a>
+
+    </nav>
+
+    <!-- LOGIN -->
+    <div class="login-main">
+
+        <!-- PANEL IZQUIERDO -->
+        <div class="left-panel">
+
+            <div class="left-logo-wrap">
+                <img src="Public/Assets/Images/logo.png" alt="Logo EduSteam">
+            </div>
+
+            <h2 class="left-title">Bienvenido de vuelta</h2>
+
+            <p class="left-desc">
+                Accede a tus tutorías, materiales y seguimiento
+                académico desde un solo lugar
+            </p>
+
+        </div>
+
+        <!-- PANEL DERECHO -->
+        <div class="right-panel">
+
+            <div class="form-container">
+
+                <h1 class="form-title">Iniciar sesión</h1>
+
+                <p class="form-subtitle">
+                    Ingresa tus credenciales para continuar
+                </p>
+
+                <form action="progreso.html" method="get">
+
+                    <div class="field-group">
+                        <label class="field-label">
+                            CORREO ELECTRÓNICO
+                        </label>
+
+                        <input type="email">
+                    </div>
+
+                    <div class="field-group">
+
+                        <div class="password-header">
+                            <label class="field-label">
+                                CONTRASEÑA
+                            </label>
+
+                            <a href="recuperar_contraseña.html" class="forgot-password">
+                                ¿Olvidaste tu contraseña?
+                            </a>
+                        </div>
+
+                        <input type="password">
+
+                    </div>
+
+                    <div class="remember-row">
+
+                        <label class="remember-label">
+
+                            <input type="checkbox" checked>
+
+                            <span>Recordar mi sesión</span>
+
+                        </label>
+
+                    </div>
+
+                    <div class="button-container">
+
+                        <button type="submit" class="btn-login-page">
+                            INGRESAR
+                        </button>
+
+                    </div>
+
+                </form>
+
+                <!-- DIVISOR -->
+                <div class="divider">
+
+                    <span></span>
+
+                    <p>o continúa con</p>
+
+                    <span></span>
+
+                </div>
+
+                <!-- LOGIN SOCIAL -->
+                <div class="social-login">
+
+                    <button class="social-btn">
+
+                        <img src="Public/Assets/Images/google.png" alt="Google">
+
+                        Google
+
+                    </button>
+
+                    <button class="social-btn">
+
+                        <img src="Public/Assets/Images/apple.svg" alt="Apple">
+
+                        Apple
+
+                    </button>
+
+                </div>
+
+                <!-- REGISTRO -->
+                <p class="register-link">
+
+                    ¿No tienes cuenta?
+
+                    <a href="crear_cuenta.html">
+                        Regístrate gratis
+                    </a>
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

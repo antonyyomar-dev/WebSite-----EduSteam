@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mi Biblioteca - EduSteam</title>
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="/Public/Assets/Styles/styles.css"/>
+  <style>
+    body { background:#fff; }
+
+    .app-nav {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:0 clamp(20px,3vw,48px); height:64px;
+      border-bottom:1px solid #e5e7eb; background:#fff;
+    }
+    .app-logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+    .app-logo img { width:36px; height:36px; }
+    .app-logo span { font-family:'El Messiri',sans-serif; font-size:1.7rem; font-weight:700; color:#1a2356; }
+    .profile-dropdown {
+      position:relative;
+      display:inline-block;
+    }
+    .avatar-btn {
+      width:40px; height:40px; border-radius:50%;
+      background:#c7bfe8; border:none; cursor:pointer;
+      font-family:'Inter',sans-serif; font-weight:700; font-size:.9rem; color:#1a2356;
+    }
+    .profile-menu {
+      position:absolute;
+      right:0;
+      top:calc(100% + 10px);
+      min-width:160px;
+      background:#fff;
+      border:1px solid #e5e7eb;
+      border-radius:14px;
+      box-shadow:0 16px 40px rgba(15, 23, 42, 0.12);
+      overflow:hidden;
+      z-index:20;
+      display:none;
+    }
+    .profile-menu.active { display:block; }
+    .profile-menu button {
+      width:100%;
+      border:none;
+      background:transparent;
+      text-align:left;
+      padding:12px 16px;
+      font-family:'Inter',sans-serif;
+      font-size:.92rem;
+      color:#1a2356;
+      cursor:pointer;
+    }
+    .profile-menu button:hover {
+      background:#f3f4f6;
+    }
+    .profile-menu .menu-title {
+      font-size:.82rem;
+      font-weight:700;
+      color:#6b7280;
+      padding:12px 16px 4px;
+      border-bottom:1px solid #f3f4f6;
+      background:#fff;
+    }
+    .breadcrumb {
+      padding:10px clamp(20px,3vw,48px);
+      font-size:.85rem; color:#6b7280;
+      border-bottom:1px solid #e5e7eb;
+    }
+    .breadcrumb a { color:#6b7280; text-decoration:none; }
+    .breadcrumb span { color:#4C5D8B; font-weight:600; }
+
+    .page-body {
+      padding:clamp(16px,2.5vw,36px) clamp(20px,3vw,48px);
+    }
+
+    /* filters */
+    .filters {
+      display:flex; gap:14px; align-items:center; margin-bottom:28px; flex-wrap:wrap;
+    }
+    .search-box {
+      display:flex; align-items:center; gap:8px;
+      border:1.5px solid #d1d5db; border-radius:99px;
+      padding:9px 16px; background:#fff; min-width:220px;
+    }
+    .search-box input {
+      border:none; outline:none; font-family:'Inter',sans-serif;
+      font-size:.88rem; color:#6b7280; background:transparent; width:100%;
+    }
+    .search-box svg { color:#6b7280; flex-shrink:0; }
+
+    .filter-select {
+      border:1.5px solid #d1d5db; border-radius:99px;
+      padding:9px 18px; font-family:'Inter',sans-serif;
+      font-size:.88rem; font-weight:600; color:#1a2356;
+      background:#fff; cursor:pointer; appearance:none;
+      padding-right:32px;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231a2356' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:right 12px center;
+      outline:none;
+    }
+
+    /* grid */
+    .materials-grid {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+    }
+
+    .mat-card {
+      border:1.5px solid #d1d5db; border-radius:14px;
+      padding:18px; background:#F5F5F5;
+      position:relative; min-height:160px;
+      display:flex; flex-direction:column; gap:8px;
+    }
+
+    .mat-actions {
+      position:absolute; top:12px; right:12px;
+      display:flex; gap:8px;
+    }
+    .mat-actions button {
+      background:none; border:none; cursor:pointer; padding:2px;
+      color:#1a2356; font-size:1rem;
+    }
+
+    .mat-icon {
+      width:36px; height:36px; display:flex; align-items:center;
+      justify-content:center; color:#1a2356;
+    }
+
+    .mat-name {
+      font-size:.88rem; font-weight:700; color:#4C5D8B;
+      word-break:break-all; line-height:1.3;
+    }
+    .mat-meta { font-size:.78rem; color:#6b7280; }
+
+    .btn-enviar {
+      display:inline-flex; align-items:center; gap:6px;
+      background:#4C5D8B; color:#fff;
+      border:none; border-radius:8px;
+      padding:7px 16px; font-size:.82rem; font-weight:700;
+      cursor:pointer; font-family:'Inter',sans-serif;
+      margin-top:4px; width:fit-content;
+    }
+    .btn-enviar:hover { background:#1a2356; }
+
+    .mat-sent { font-size:.78rem; color:#6b7280; }
+
+    /* upload card */
+    .mat-card.upload {
+      background:#F5F5F5; border-style:dashed;
+      align-items:center; justify-content:center;
+      cursor:pointer; text-align:center;
+    }
+    .upload-icon { color:#1a2356; margin-bottom:6px; }
+    .upload-title { font-size:.88rem; font-weight:700; color:#1a2356; }
+    .upload-sub { font-size:.78rem; color:#6b7280; }
+
+    @media(max-width:900px){ .materials-grid { grid-template-columns:1fr 1fr; } }
+    @media(max-width:580px){ .materials-grid { grid-template-columns:1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="app-nav">
+    <a class="app-logo" href="index.html">
+      <img src="Public/Assets/Images/logo.png" alt="EduSteam">
+      <span>EduSteam</span>
+
+    </a>
+    <div class="profile-dropdown">
+      <button class="avatar-btn" id="profileButton" aria-haspopup="true" aria-expanded="false">RC</button>
+      <div class="profile-menu" id="profileMenu" role="menu" aria-label="Opciones de perfil">
+        <div class="menu-title">Seleccionar perfil</div>
+        <button type="button" data-profile="Estudiante">Estudiante</button>
+        <button type="button" data-profile="Tutor">Tutor</button>
+        <button type="button" data-profile="Padre de Familia">Padre de Familia</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="breadcrumb">
+    <ul class="nav-links">
+      <li><a href="estadisticas_tutor.html">Estadísticas</a></li>
+      <li><a href="clases_tutor.html">Mis clases</a></li>
+      <li><a href="biblioteca_materiales.html" class="active">Biblioteca de materiales</a></li>
+      <li><a href="perfil_tutor.html">Perfil</a></li>
+      </ul>
+  </div>
+
+  
+
+  <div class="page-body">
+
+    <!-- FILTERS -->
+    <div class="filters">
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" placeholder="Buscar material..." oninput="filterCards(this.value)">
+      </div>
+      <select class="filter-select">
+        <option>Todos los cursos</option>
+        <option>Cálculo</option>
+        <option>Álgebra</option>
+        <option>Trigonometría</option>
+      </select>
+      <select class="filter-select">
+        <option>Todos los tipos</option>
+        <option>PDF</option>
+        <option>Imagen</option>
+        <option>Documento</option>
+      </select>
+    </div>
+
+    <!-- GRID -->
+    <div class="materials-grid" id="grid">
+
+      <div class="mat-card" data-name="ejercicios calculo sesion4">
+        <div class="mat-actions">
+          <button title="Editar" onclick="editarMaterial(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button title="Eliminar" onclick="eliminarMaterial(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="mat-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+        </div>
+        <div class="mat-name">Ejercicios_Calculo_Sesion4.pdf</div>
+        <div class="mat-meta">PDF · Subido hoy</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+          <button class="btn-enviar">Enviar</button>
+          <span class="mat-sent">Enviado a 5 alumnos</span>
+        </div>
+      </div>
+
+      <div class="mat-card" data-name="apuntes limites derivadas">
+        <div class="mat-actions">
+          <button title="Editar" onclick="editarMaterial(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button title="Eliminar" onclick="eliminarMaterial(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="mat-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+        </div>
+        <div class="mat-name">Apuntes_Limites_Derivadas.pdf</div>
+        <div class="mat-meta">PDF · Ayer</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+          <button class="btn-enviar">Enviar</button>
+          <span class="mat-sent">Enviado a 16 alumnos</span>
+        </div>
+      </div>
+
+      <div class="mat-card" data-name="guia integral indefinida">
+        <div class="mat-actions">
+          <button title="Editar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button title="Eliminar">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="mat-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+        </div>
+        <div class="mat-name">Guia_Integral_Indefinida.pdf</div>
+        <div class="mat-meta">PDF · 08 mayo</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+          <button class="btn-enviar">Enviar</button>
+          <span class="mat-sent">Enviado a 7 alumnos</span>
+        </div>
+      </div>
+
+      <div class="mat-card" data-name="practica algebra lineal">
+        <div class="mat-actions">
+          <button title="Editar" onclick="editarMaterial(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button title="Eliminar" onclick="eliminarMaterial(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="mat-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+        </div>
+        <div class="mat-name">Practica_Algebra_Lineal.pdf</div>
+        <div class="mat-meta">PDF · 05 mayo</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+          <button class="btn-enviar">Enviar</button>
+          <span class="mat-sent">Enviado a 6 alumnos</span>
+        </div>
+      </div>
+
+      <div class="mat-card" data-name="formulario trigonometria">
+        <div class="mat-actions">
+          <button title="Editar" onclick="editarMaterial(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </button>
+          <button title="Eliminar" onclick="eliminarMaterial(this)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </button>
+        </div>
+        <div class="mat-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm-1 1.5L18.5 9H13V3.5zM6 20V4h5v7h7v9H6z"/></svg>
+        </div>
+        <div class="mat-name">Formulario_Trigonometria.pdf</div>
+        <div class="mat-meta">PDF · 02 mayo</div>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:4px;">
+          <button class="btn-enviar">Enviar</button>
+          <span class="mat-sent">Enviado a 10 alumnos</span>
+        </div>
+      </div>
+
+      <!-- upload card -->
+      <div class="mat-card upload" onclick="document.getElementById('fileInput').click()">
+        <div class="upload-icon">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/>
+          </svg>
+        </div>
+        <div class="upload-title">Subir nuevo material</div>
+        <div class="upload-sub">PDF, imágenes o documentos</div>
+        <input type="file" id="fileInput" style="display:none" accept=".pdf,.doc,.docx,.jpg,.png">
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function filterCards(q) {
+      document.querySelectorAll('.mat-card:not(.upload)').forEach(card => {
+        const name = card.dataset.name || '';
+        card.style.display = name.includes(q.toLowerCase()) ? '' : 'none';
+      });
+    }
+    function editarMaterial(btn) {
+      const card = btn.closest('.mat-card');
+      const nameEl = card.querySelector('.mat-name');
+      const nuevo = prompt('Nuevo nombre:', nameEl.textContent);
+      if (nuevo && nuevo.trim()) nameEl.textContent = nuevo.trim();
+    }
+    function eliminarMaterial(btn) {
+      const card = btn.closest('.mat-card');
+      const nombre = card.querySelector('.mat-name').textContent;
+      if (confirm('¿Eliminar "' + nombre + '"?')) {
+        card.style.transition = 'opacity .3s';
+        card.style.opacity = '0';
+        setTimeout(() => card.remove(), 300);
+      }
+    }
+
+    const profileButton = document.getElementById('profileButton');
+    const profileMenu = document.getElementById('profileMenu');
+
+    if (profileButton && profileMenu) {
+      profileButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const expanded = profileButton.getAttribute('aria-expanded') === 'true';
+        profileButton.setAttribute('aria-expanded', String(!expanded));
+        profileMenu.classList.toggle('active');
+      });
+
+      const profileItems = profileMenu.querySelectorAll('button[data-profile]');
+      profileItems.forEach((item) => {
+        item.addEventListener('click', selectProfile);
+      });
+
+      document.addEventListener('click', (event) => {
+        if (!profileMenu.classList.contains('active')) return;
+        if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
+          profileMenu.classList.remove('active');
+          profileButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    function selectProfile(event) {
+      const profile = event.currentTarget.dataset.profile;
+      if (!profile) return;
+      const targetPages = {
+        'Estudiante': 'progreso.html',
+        'Tutor': 'estadisticas_tutor.html',
+        'Padre de Familia': 'seguimiento_padre.html'
+      };
+      profileMenu.classList.remove('active');
+      profileButton.setAttribute('aria-expanded', 'false');
+      const targetPage = targetPages[profile];
+      if (targetPage) {
+        window.location.href = targetPage;
+      }
+    }
+  </script>
+
+</body>
+</html>
