@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EduSteam – Recomendaciones para mi hijo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f9f9fb;
+      color: #1a2356;
+    }
+
+    /* ══════════════════════════════
+       NAVBAR
+    ══════════════════════════════ */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 3vw, 48px);
+      height: 64px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+
+    .logo-text {
+      font-family: 'El Messiri', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #1a2356;
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .nav-right { display: flex; align-items: center; gap: 14px; }
+
+    .nav-greeting {
+      font-size: clamp(0.8rem, 0.86vw, 0.96rem);
+      color: #6b7280;
+    }
+
+    .nav-greeting strong { color: #1a2356; }
+
+    .nav-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #c7bfe8;
+      color: #1a2356;
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════
+       HERO BANNER
+    ══════════════════════════════ */
+    .rec-hero {
+      background: linear-gradient(120deg, #1a2356 0%, #4C5D8B 60%, #9176AB 100%);
+      padding: clamp(28px, 3vw, 52px) clamp(24px, 3.5vw, 80px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .rec-hero-text { display: flex; flex-direction: column; gap: 10px; }
+
+    .rec-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: clamp(0.7rem, 0.76vw, 0.86rem);
+      font-weight: 500;
+      padding: 4px 14px;
+      border-radius: 999px;
+      width: fit-content;
+      letter-spacing: 0.04em;
+    }
+
+    .rec-hero-title {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1.4rem, 2.2vw, 2.6rem);
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+    }
+
+    .rec-hero-title span { color: #c7bfe8; }
+
+    .rec-hero-sub {
+      font-size: clamp(0.8rem, 0.88vw, 1rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    /* Alumno selector */
+    .alumno-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(63, 63, 82, 0.6);
+      border: 1.5px solid rgba(106, 77, 77, 0.25);
+      border-radius: clamp(10px, 1vw, 16px);
+      padding: clamp(12px, 1.2vw, 20px) clamp(16px, 1.6vw, 24px);
+      min-width: 0px;
+    }
+
+    .alumno-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #0b071d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'El Messiri', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: #1a2356;
+      flex-shrink: 0;
+    }
+
+    .alumno-info { display: flex; flex-direction: column; gap: 2px; }
+
+    .alumno-label {
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.65);
+      font-weight: 400;
+    }
+
+    .alumno-name {
+      font-size: 0.96rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .alumno-grado {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.75);
+    }
+
+    /* ══════════════════════════════
+       CONTENIDO PRINCIPAL
+    ══════════════════════════════ */
+    .rec-main {
+      padding: clamp(24px, 2.5vw, 44px) clamp(24px, 3.5vw, 80px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(24px, 2.5vw, 40px);
+    }
+
+    /* ── Sección título ── */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1rem, 1.15vw, 1.3rem);
+      font-weight: 700;
+      color: #1a2356;
+    }
+
+    .section-sub {
+      font-size: clamp(0.72rem, 0.78vw, 0.88rem);
+      color: #6b7280;
+      margin-top: 3px;
+    }
+
+    .ver-todo-link {
+      font-size: clamp(0.72rem, 0.78vw, 0.88rem);
+      color: #9176AB;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .ver-todo-link:hover { text-decoration: underline; }
+
+    /* ══════════════════════════════
+       RESUMEN DE RENDIMIENTO
+    ══════════════════════════════ */
+    .rendimiento-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: clamp(12px, 1.2vw, 18px);
+    }
+
+    .rend-card {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: clamp(10px, 1vw, 16px);
+      padding: clamp(14px, 1.4vw, 22px);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .rend-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .rend-icon-wrap {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .rend-trend {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .trend--up   { background: #dcfce7; color: #16a34a; }
+    .trend--down { background: #fee2e2; color: #dc2626; }
+    .trend--mid  { background: #fef3c7; color: #d97706; }
+
+    .rend-valor {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1.6rem, 2vw, 2.4rem);
+      font-weight: 700;
+      color: #1a2356;
+      line-height: 1;
+    }
+
+    .rend-materia {
+      font-size: clamp(0.8rem, 0.86vw, 0.96rem);
+      font-weight: 600;
+      color: #1a2356;
+    }
+
+    .rend-desc {
+      font-size: clamp(0.68rem, 0.74vw, 0.82rem);
+      color: #6b7280;
+    }
+
+    /* Barra de progreso */
+    .rend-bar-wrap {
+      height: 6px;
+      background: #f3f4f6;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .rend-bar {
+      height: 100%;
+      border-radius: 999px;
+      transition: width .6s ease;
+    }
+
+    /* ══════════════════════════════
+       ÁREAS PRIORITARIAS
+    ══════════════════════════════ */
+    .prioridad-list {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 1vw, 14px);
+    }
+
+    .prioridad-item {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: clamp(10px, 1vw, 14px);
+      padding: clamp(12px, 1.2vw, 18px) clamp(16px, 1.6vw, 24px);
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 1.2vw, 20px);
+    }
+
+    .prioridad-item.prioridad--alta  { border-left: 4px solid #ef4444; }
+    .prioridad-item.prioridad--media { border-left: 4px solid #f59e0b; }
+    .prioridad-item.prioridad--baja  { border-left: 4px solid #22c55e; }
+
+    .prio-rank {
+      font-family: 'El Messiri', sans-serif;
+      font-size: clamp(1.2rem, 1.4vw, 1.7rem);
+      font-weight: 700;
+      color: #e5e7eb;
+      width: 28px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .prio-info { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+
+    .prio-materia {
+      font-size: clamp(0.86rem, 0.92vw, 1.02rem);
+      font-weight: 600;
+      color: #1a2356;
+    }
+
+    .prio-tema {
+      font-size: clamp(0.72rem, 0.78vw, 0.88rem);
+      color: #6b7280;
+    }
+
+    .prio-bar-wrap {
+      flex: 1;
+      max-width: 200px;
+    }
+
+    .prio-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.7rem;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .prio-bar-track {
+      height: 8px;
+      background: #f3f4f6;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .prio-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
+
+    .fill--alta  { background: #ef4444; }
+    .fill--media { background: #f59e0b; }
+    .fill--baja  { background: #22c55e; }
+
+    .prio-badge {
+      font-size: clamp(0.68rem, 0.72vw, 0.8rem);
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .prio-badge--alta  { background: #fee2e2; color: #dc2626; }
+    .prio-badge--media { background: #fef3c7; color: #d97706; }
+    .prio-badge--baja  { background: #dcfce7; color: #16a34a; }
+
+    .prio-btn {
+      background: #1a2356;
+      color: #fff;
+      border: none;
+      border-radius: clamp(6px, 0.5vw, 9px);
+      padding: clamp(7px, 0.7vw, 10px) clamp(14px, 1.4vw, 20px);
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.72rem, 0.76vw, 0.86rem);
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity .2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .prio-btn:hover { opacity: 0.85; }
+
+    /* ══════════════════════════════
+       TUTORES RECOMENDADOS
+    ══════════════════════════════ */
+    .tutores-rec-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: clamp(14px, 1.4vw, 22px);
+    }
+
+    .tutor-rec-card {
+      background: #fff;
+      border: 1.5px solid #e5e7eb;
+      border-radius: clamp(10px, 1vw, 16px);
+      padding: clamp(16px, 1.6vw, 24px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(10px, 1vw, 14px);
+      transition: box-shadow .2s, border-color .2s;
+      position: relative;
+    }
+
+    .tutor-rec-card:hover {
+      box-shadow: 0 4px 22px rgba(145,118,171,0.14);
+      border-color: #c7bfe8;
+    }
+
+    .tutor-rec-card.card--destacado {
+      border-color: #4C5D8B;
+      border-width: 2px;
+    }
+
+    .card-destacado-tag {
+      position: absolute;
+      top: -1px;
+      right: 16px;
+      background: #4C5D8B;
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 600;
+      padding: 3px 12px;
+      border-radius: 0 0 8px 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .tutor-rec-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tutor-rec-avatar {
+      width: clamp(40px, 3.6vw, 52px);
+      height: clamp(40px, 3.6vw, 52px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'El Messiri', sans-serif;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 0.92vw, 1.05rem);
+      color: #1a2356;
+      flex-shrink: 0;
+    }
+
+    .tutor-rec-info { display: flex; flex-direction: column; gap: 2px; }
+
+    .tutor-rec-name {
+      font-size: clamp(0.86rem, 0.92vw, 1.02rem);
+      font-weight: 700;
+      color: #1a2356;
+    }
+
+    .tutor-rec-materia {
+      font-size: clamp(0.7rem, 0.76vw, 0.86rem);
+      color: #6b7280;
+    }
+
+    .tutor-rec-match {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #f0edf7;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-size: clamp(0.7rem, 0.76vw, 0.84rem);
+      color: #4C5D8B;
+      font-weight: 500;
+    }
+
+    .match-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #9176AB;
+      flex-shrink: 0;
+    }
+
+    .tutor-rec-stats {
+      display: flex;
+      gap: clamp(10px, 1vw, 16px);
+    }
+
+    .rec-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .rec-stat-val {
+      font-size: clamp(0.88rem, 0.94vw, 1.05rem);
+      font-weight: 700;
+      color: #1a2356;
+    }
+
+    .rec-stat-label {
+      font-size: clamp(0.65rem, 0.7vw, 0.78rem);
+      color: #9ca3af;
+    }
+
+    .tutor-rec-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .rec-tag {
+      background: #f3f0f8;
+      color: #4C5D8B;
+      font-size: clamp(0.62rem, 0.68vw, 0.78rem);
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 500;
+    }
+
+    .tutor-rec-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: auto;
+    }
+
+    .tutor-rec-price {
+      font-size: clamp(0.82rem, 0.88vw, 1rem);
+      font-weight: 700;
+      color: #1a2356;
+    }
+
+    .tutor-rec-price span {
+      font-size: clamp(0.68rem, 0.72vw, 0.8rem);
+      font-weight: 400;
+      color: #9ca3af;
+    }
+
+    .btn-agendar {
+      background: #1a2356;
+      color: #fff;
+      border: none;
+      border-radius: clamp(6px, 0.5vw, 9px);
+      padding: clamp(7px, 0.7vw, 10px) clamp(14px, 1.4vw, 20px);
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.72rem, 0.76vw, 0.86rem);
+      font-weight: 500;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+
+    .btn-agendar:hover { opacity: 0.85; }
+
+    .stars-sm { color: #f5a623; font-size: 0.78rem; }
+
+    /* ══════════════════════════════
+       AVISO INFORMATIVO
+    ══════════════════════════════ */
+    .rec-aviso {
+      background: linear-gradient(135deg, #f0edf7 0%, #e8f0fe 100%);
+      border: 1.5px solid #c7bfe8;
+      border-radius: clamp(10px, 1vw, 16px);
+      padding: clamp(14px, 1.4vw, 22px) clamp(18px, 1.8vw, 28px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .aviso-icon {
+      width: 42px;
+      height: 42px;
+      background: #4C5D8B;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .aviso-text { display: flex; flex-direction: column; gap: 3px; }
+
+    .aviso-title {
+      font-size: clamp(0.84rem, 0.9vw, 1rem);
+      font-weight: 600;
+      color: #1a2356;
+    }
+
+    .aviso-desc {
+      font-size: clamp(0.72rem, 0.78vw, 0.88rem);
+      color: #4C5D8B;
+      line-height: 1.5;
+    }
+
+    /* ══════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════ */
+    @media (max-width: 1100px) {
+      .tutores-rec-grid { grid-template-columns: repeat(2, 1fr); }
+      .rendimiento-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 720px) {
+      .tutores-rec-grid { grid-template-columns: 1fr; }
+      .rendimiento-grid { grid-template-columns: repeat(2, 1fr); }
+      .rec-hero { flex-direction: column; align-items: flex-start; }
+      .prio-bar-wrap { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .rendimiento-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ══════════════════════════════
+       BARRA NAVEGACIÓN SECUNDARIA
+    ══════════════════════════════ */
+    .breadcrumb-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(20px, 3vw, 48px);
+      border-bottom: 1px solid #e5e7eb;
+      background: #fff;
+    }
+
+    .bc { width: 100%; }
+
+    .sub-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .sub-nav-links li { margin: 0; padding: 0; }
+
+    .sub-nav-links a {
+      display: block;
+      padding: 10px 0;
+      text-decoration: none;
+      color: #6b7280;
+      font-size: clamp(0.78rem, 0.85vw, 1.05rem);
+      font-weight: 400;
+      border-bottom: 2px solid transparent;
+      transition: color .2s, border-color .2s;
+    }
+
+    .sub-nav-links a:hover { color: #1a2356; }
+
+    .sub-nav-links a.sub-active {
+      color: #9176AB;
+      border-bottom-color: #9176AB;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════════════════════════
+       NAVBAR
+  ══════════════════════════════ -->
+  <nav>
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="Logo EduSteam" class="logo-icon" />
+      <span class="logo-text">EduSteam</span>
+    </a>
+    <div class="nav-right">
+      <span class="nav-greeting">Hola, <strong>Mamá / Papá</strong></span>
+      <div class="nav-avatar">JP</div>
+    </div>
+  </nav>
+
+  <!-- ══════════════════════════════
+       BARRA NAVEGACIÓN SECUNDARIA
+  ══════════════════════════════ -->
+  <div class="breadcrumb-row">
+    <div class="bc">
+      <ul class="sub-nav-links">
+        <li><a href="seguimiento_padre.html">Seguimiento</a></li>
+        <li><a href="recomendaciones_padre.html">Análisis Hijos</a></li>
+         <li><a href="rutina_estudiante.html">Rutinas de Estudio</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       CONTENIDO PRINCIPAL
+  ══════════════════════════════ -->
+  <main class="rec-main">
+
+    <!-- ── AVISO SISTEMA ── -->
+    <div class="rec-aviso">
+      <div style="display: flex; align-items: center; gap: 14px;">
+        <div class="aviso-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <div class="aviso-text">
+          <span class="aviso-title">Análisis actualizado — 10 de mayo, 2026</span>
+          <span class="aviso-desc">El sistema detectó 3 áreas con bajo rendimiento en el último bimestre. Las tutorías recomendadas están ordenadas por prioridad de refuerzo.</span>
+        </div>
+      </div>
+      <div class="alumno-selector">
+        <div class="alumno-info">
+          <span class="alumno-label">Estudiante activo</span>
+          <span class="alumno-name">José Sánchez</span>
+          <span class="alumno-grado">4to de Secundaria · Turno tarde</span>
+        </div>
+      </div>
+    </div>
+   
+  </div>
+    <!-- ── RESUMEN DE RENDIMIENTO ── -->
+    <div>
+      <div class="section-header">
+        <div>
+          <p class="section-title">Resumen de rendimiento</p>
+          <p class="section-sub">Notas promedio del último bimestre</p>
+        </div>
+        <a href="#" class="ver-todo-link">Ver reporte completo →</a>
+      </div>
+
+      <div style="height:16px;"></div>
+
+      <div class="rendimiento-grid">
+
+        <div class="rend-card">
+          <div class="rend-card-top">
+            <div class="rend-icon-wrap" style="background:#fee2e2;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <span class="rend-trend trend--down">↓ Crítico</span>
+          </div>
+          <div class="rend-valor">08</div>
+          <div class="rend-materia">Cálculo</div>
+          <div class="rend-desc">Por debajo del mínimo aprobatorio</div>
+          <div class="rend-bar-wrap"><div class="rend-bar" style="width:33%;background:#ef4444;"></div></div>
+        </div>
+
+        <div class="rend-card">
+          <div class="rend-card-top">
+            <div class="rend-icon-wrap" style="background:#fef3c7;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <span class="rend-trend trend--mid">↘ En riesgo</span>
+          </div>
+          <div class="rend-valor">11</div>
+          <div class="rend-materia">Álgebra</div>
+          <div class="rend-desc">Necesita refuerzo en ecuaciones</div>
+          <div class="rend-bar-wrap"><div class="rend-bar" style="width:55%;background:#f59e0b;"></div></div>
+        </div>
+
+        <div class="rend-card">
+          <div class="rend-card-top">
+            <div class="rend-icon-wrap" style="background:#fef3c7;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <span class="rend-trend trend--mid">↘ En riesgo</span>
+          </div>
+          <div class="rend-valor">12</div>
+          <div class="rend-materia">Física</div>
+          <div class="rend-desc">Dificultades en dinámica</div>
+          <div class="rend-bar-wrap"><div class="rend-bar" style="width:60%;background:#f59e0b;"></div></div>
+        </div>
+
+        <div class="rend-card">
+          <div class="rend-card-top">
+            <div class="rend-icon-wrap" style="background:#dcfce7;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+            </div>
+            <span class="rend-trend trend--up">↑ Aprobado</span>
+          </div>
+          <div class="rend-valor">15</div>
+          <div class="rend-materia">Comunicación</div>
+          <div class="rend-desc">Rendimiento estable</div>
+          <div class="rend-bar-wrap"><div class="rend-bar" style="width:75%;background:#22c55e;"></div></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── ÁREAS PRIORITARIAS DE REFUERZO ── -->
+    <div>
+      <div class="section-header">
+        <div>
+          <p class="section-title">Áreas prioritarias de refuerzo</p>
+          <p class="section-sub">Ordenadas por nivel de urgencia detectado</p>
+        </div>
+      </div>
+
+      <div style="height:16px;"></div>
+
+      <div class="prioridad-list">
+
+        <div class="prioridad-item prioridad--alta">
+          <div class="prio-rank">1</div>
+          <div class="prio-info">
+            <span class="prio-materia">Cálculo Diferencial</span>
+            <span class="prio-tema">Límites y derivadas · Nota: 08/20</span>
+          </div>
+          <div class="prio-bar-wrap">
+            <div class="prio-bar-label"><span>Dominio</span><span>40%</span></div>
+            <div class="prio-bar-track"><div class="prio-bar-fill fill--alta" style="width:40%;"></div></div>
+          </div>
+          <span class="prio-badge prio-badge--alta">Urgente</span>
+          <button class="prio-btn" onclick="document.getElementById('sec-tutores').scrollIntoView({behavior:'smooth'})">Ver tutores</button>
+        </div>
+
+        <div class="prioridad-item prioridad--media">
+          <div class="prio-rank">2</div>
+          <div class="prio-info">
+            <span class="prio-materia">Álgebra Lineal</span>
+            <span class="prio-tema">Sistemas de ecuaciones · Nota: 11/20</span>
+          </div>
+          <div class="prio-bar-wrap">
+            <div class="prio-bar-label"><span>Dominio</span><span>55%</span></div>
+            <div class="prio-bar-track"><div class="prio-bar-fill fill--media" style="width:55%;"></div></div>
+          </div>
+          <span class="prio-badge prio-badge--media">Medio</span>
+          <button class="prio-btn" onclick="document.getElementById('sec-tutores').scrollIntoView({behavior:'smooth'})">Ver tutores</button>
+        </div>
+
+        <div class="prioridad-item prioridad--media">
+          <div class="prio-rank">3</div>
+          <div class="prio-info">
+            <span class="prio-materia">Física</span>
+            <span class="prio-tema">Leyes de Newton · Nota: 12/20</span>
+          </div>
+          <div class="prio-bar-wrap">
+            <div class="prio-bar-label"><span>Dominio</span><span>60%</span></div>
+            <div class="prio-bar-track"><div class="prio-bar-fill fill--media" style="width:60%;"></div></div>
+          </div>
+          <span class="prio-badge prio-badge--media">Medio</span>
+          <button class="prio-btn" onclick="document.getElementById('sec-tutores').scrollIntoView({behavior:'smooth'})">Ver tutores</button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── TUTORES RECOMENDADOS ── -->
+    <div id="sec-tutores">
+      <div class="section-header">
+        <div>
+          <p class="section-title">Tutores recomendados para José</p>
+          <p class="section-sub">Seleccionados según las áreas que más necesita reforzar</p>
+        </div>
+        <a href="buscar_tutores.html" class="ver-todo-link">Ver todos los tutores →</a>
+      </div>
+
+      <div style="height:16px;"></div>
+
+      <div class="tutores-rec-grid">
+
+        <!-- Tutor 1 — Destacado -->
+        <div class="tutor-rec-card card--destacado">
+          <div class="card-destacado-tag">⭐ MEJOR COINCIDENCIA</div>
+          <div class="tutor-rec-header">
+            <div class="tutor-rec-avatar" style="background:#c7bfe8;">RC</div>
+            <div class="tutor-rec-info">
+              <span class="tutor-rec-name">Roberto Castro</span>
+              <span class="tutor-rec-materia">Cálculo · Álgebra</span>
+            </div>
+          </div>
+          <div class="tutor-rec-match">
+            <div class="match-dot"></div>
+            Coincide con Cálculo Diferencial y Álgebra Lineal
+          </div>
+          <div class="tutor-rec-stats">
+            <div class="rec-stat">
+              <span class="rec-stat-val"><span class="stars-sm">★★★★★</span></span>
+              <span class="rec-stat-label">97 reseñas</span>
+            </div>
+            <div class="rec-stat">
+              <span class="rec-stat-val">2 años</span>
+              <span class="rec-stat-label">Experiencia</span>
+            </div>
+            <div class="rec-stat">
+              <span class="rec-stat-val">94%</span>
+              <span class="rec-stat-label">Tasa de aprobación</span>
+            </div>
+          </div>
+          <div class="tutor-rec-tags">
+            <span class="rec-tag">Cálculo</span>
+            <span class="rec-tag">Álgebra</span>
+            <span class="rec-tag">Preuniversitario</span>
+          </div>
+          <div class="tutor-rec-footer">
+            <div class="tutor-rec-price">S/ 30 <span>/ hora</span></div>
+            <button class="btn-agendar" onclick="window.location.href='agendar_sesion.html'">Agendar sesión</button>
+          </div>
+        </div>
+
+        <!-- Tutor 2 -->
+        <div class="tutor-rec-card">
+          <div class="tutor-rec-header">
+            <div class="tutor-rec-avatar" style="background:#b7d4f0;">LM</div>
+            <div class="tutor-rec-info">
+              <span class="tutor-rec-name">Laura Mendoza</span>
+              <span class="tutor-rec-materia">Física · Cálculo</span>
+            </div>
+          </div>
+          <div class="tutor-rec-match">
+            <div class="match-dot"></div>
+            Coincide con Física — Leyes de Newton
+          </div>
+          <div class="tutor-rec-stats">
+            <div class="rec-stat">
+              <span class="rec-stat-val"><span class="stars-sm">★★★★</span></span>
+              <span class="rec-stat-label">54 reseñas</span>
+            </div>
+            <div class="rec-stat">
+              <span class="rec-stat-val">3 años</span>
+              <span class="rec-stat-label">Experiencia</span>
+            </div>
+            <div class="rec-stat">
+              <span class="rec-stat-val">89%</span>
+              <span class="rec-stat-label">Tasa de aprobación</span>
+            </div>
+          </div>
+          <div class="tutor-rec-tags">
+            <span class="rec-tag">Física</span>
+            <span class="rec-tag">Cálculo</span>
+            <span class="rec-tag">Universitario</span>
+          </div>
+          <div class="tutor-rec-footer">
+            <div class="tutor-rec-price">S/ 35 <span>/ hora</span></div>
+            <button class="btn-agendar">Agendar sesión</button>
+          </div>
+        </div>
+
+        <!-- Tutor 3 -->
+        <div class="tutor-rec-card">
+          <div class="tutor-rec-header">
+            <div class="tutor-rec-avatar" style="background:#fde8c8;">AP</div>
+            <div class="tutor-rec-info">
+              <span class="tutor-rec-name">Andrés Paredes</span>
+              <span class="tutor-rec-materia">Álgebra · Trigonometría</span>
+            </div>
+          </div>
+          <div class="tutor-rec-match">
+            <div class="match-dot"></div>
+            Coincide con Álgebra Lineal — Ecuaciones
+          </div>
+          <div class="tutor-rec-stats">
+            <div class="rec-stat">
+              <span class="rec-stat-val"><span class="stars-sm">★★★★★</span></span>
+              <span class="rec-stat-label">81 reseñas</span>
+            </div>
+            <div class="rec-stat">
+              <span class="rec-stat-val">4 años</span>
+              <span class="rec-stat-label">Experiencia</span>
+            </div>
+            <div class="rec-stat">
+              <span class="rec-stat-val">91%</span>
+              <span class="rec-stat-label">Tasa de aprobación</span>
+            </div>
+          </div>
+          <div class="tutor-rec-tags">
+            <span class="rec-tag">Álgebra</span>
+            <span class="rec-tag">Trigonometría</span>
+            <span class="rec-tag">Preuniversitario</span>
+          </div>
+          <div class="tutor-rec-footer">
+            <div class="tutor-rec-price">S/ 28 <span>/ hora</span></div>
+            <button class="btn-agendar">Agendar sesión</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    /* Scroll suave al hacer click en "Ver tutores" de prioridades */
+    document.querySelectorAll('.prio-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('sec-tutores').scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    /* Botones agendar */
+    document.querySelectorAll('.btn-agendar').forEach(btn => {
+      btn.addEventListener('click', () => {
+        window.location.href = 'agendar_sesion.html';
+      });
+    });
+  </script>
+
+</body>
+</html>
